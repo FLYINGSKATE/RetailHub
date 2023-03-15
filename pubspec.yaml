@@ -51,7 +51,7 @@ dependencies:
   velocity_x: ^3.5.1
   sizer: ^2.0.15
   linkedin_login: ^2.2.1
-  video_player: ^2.5.1
+  # video_player: ^2.5.1
   chewie: ^1.4.0
   footer: ^0.0.4
   webview_flutter: ^4.0.2
