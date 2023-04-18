@@ -87,14 +87,15 @@ class LoginViewModel extends BaseViewModel {
             prefs.setString(UserDetails.fullname.toString(), user['fullName']);
             prefs.setString(UserDetails.email.toString(), user['email']);
             prefs.setString(
-                UserDetails.phoneNumber.toString(), user['phoneNumber']??"");
-            prefs.setString(UserDetails.position.toString(), user['position']??"");
+                UserDetails.phoneNumber.toString(), user['phoneNumber'] ?? "");
+            prefs.setString(
+                UserDetails.position.toString(), user['position'] ?? "");
             prefs.setString(UserDetails.token.toString(), user['token']);
             prefs.setBool(UserDetails.islogin.toString(), true);
             prefs.setBool(UserDetails.isLinkedinlogin.toString(), false);
             prefs.setBool(
                 UserDetails.isVerified.toString(), user['isVerified']);
-            prefs.setString(UserDetails.city.toString(), user['city']??"");
+            prefs.setString(UserDetails.city.toString(), user['city'] ?? "");
 
             BaseCommonMethods.showSnackbar(
               context: context,
@@ -125,18 +126,20 @@ class LoginViewModel extends BaseViewModel {
       ApiServices.postRequest(
           url: API.register,
           params: {
-            "policyConfirmed": true,
-            "isCompany": "false",
-            "emailDomain": "@retailhub.com",
-            "email": busienssemail.text,
-            "companyLegalName": "Retailhub.com",
-            "password": password.text,
-            "lastName": lastname.text,
             "firstName": firstname.text,
+            "lastName": lastname.text,
+            "email": busienssemail.text,
+            "password": password.text,
+            "role": "Retailer",
+            "phoneNumber":phone.text,
+            "policyConfirmed": true,
+            "emailDomain": "@retailhub.com",
+            "isCompany": false,
+            "companyLegalName": "Retailhub.com",
             "businessTypeName": "Retailer",
             "businessType": "Retailer",
             "companyShortName": "Retailhub.com",
-            "role": "Retailer",
+            "isLinkedinUser": false
           },
           onSuccess: (Map data) async {
             await showProgressBar(false);

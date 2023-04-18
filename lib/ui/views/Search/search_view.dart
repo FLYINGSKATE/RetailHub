@@ -21,24 +21,29 @@ class _SearchViewState extends State<SearchView>
       builder:
           (BuildContext? context, SearchViewModel? viewModel, Widget? child) {
         return Scaffold(
-          backgroundColor: backgroundColor,
+            backgroundColor: backgroundColor,
             appBar: AppBar(
               backgroundColor: backgroundColor,
               title: TextField(
-                controller: viewModel?.filter,
+                controller: viewModel?.searchController,
                 style: const TextStyle(color: white),
-                  textInputAction: TextInputAction.search,
+                textInputAction: TextInputAction.search,
+                onChanged: (ss) {
+                  viewModel?.searchArticles();
+                },
+                onEditingComplete: (() => viewModel?.searchArticles()),
+                onSubmitted: ((value) {
+                  viewModel?.searchArticles();
+                }),
                 decoration: const InputDecoration(
                   hintText: "Search...",
                   fillColor: white,
                   hintStyle: TextStyle(color: white),
-                  
                   prefixIcon: Icon(
                     Icons.search,
                     color: white,
                   ),
                   border: InputBorder.none,
-                
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xffBEE73E)),
                   ),
@@ -46,7 +51,7 @@ class _SearchViewState extends State<SearchView>
               ),
             ),
             resizeToAvoidBottomInset: false,
-           body: Stack(
+            body: Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 _bodyWidget(viewModel!),
@@ -62,25 +67,35 @@ class _SearchViewState extends State<SearchView>
   }
 
   Widget _bodyWidget(SearchViewModel viewModel) {
-   return Container(
-        color: backgroundColor,
-        height: double.infinity,
-        width: double.infinity,
-        alignment: Alignment.topCenter,
-        child: Container(
-                  margin: const EdgeInsets.only(left: 10, right: 10),
-                  child: (viewModel.searchitems.isNotEmpty)
-                      ? ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: viewModel.searchitems.length,
-                          itemBuilder: (context, index) {
-                            Datum? blogs = viewModel.searchitems[index];
-                            return NewsItem(myCallback: () {
-                              viewModel.navigateToDetails(blogs);
-                            }, blogs!.id, blogs.title!, blogs.imageName,
-                                blogs.description,blogs.articlesLink);
-                          })
-                      : const NoDataWidget(message: 'No data available')));
+    return Container(
+  color: backgroundColor,
+  height: double.infinity,
+  width: double.infinity,
+  alignment: Alignment.topCenter,
+  child: Container(
+    margin: const EdgeInsets.only(left: 10, right: 10),
+    child: viewModel.searchitems.isNotEmpty
+      ? ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: viewModel.searchitems.length,
+          itemBuilder: (context, index) {
+            Datum? blogs = viewModel.searchitems[index];
+            return NewsItem(
+              myCallback: () {
+                viewModel.navigateToDetails(blogs);
+              },
+              blogs.id,
+              blogs.title,
+              blogs.imageName,
+              blogs.description,
+              blogs.articlesLink,
+            );
+          },
+        )
+      : const NoDataWidget(message: 'No articles found'),
+  ),
+);
+
   }
 }

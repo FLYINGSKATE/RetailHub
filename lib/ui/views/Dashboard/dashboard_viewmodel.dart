@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:retailhub/constants/route_names.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,21 +15,25 @@ class DashboardViewModel extends BaseViewModel {
   bool isLoading = false;
   final PermissionsService _permissionsService = PermissionsService();
 
-  var firstName = "Raushan";
+  String firstName = "Raushan";
 
-  var lastName = "Jha";
+  String lastName = "";
 
-  var fullName = "Raushan Jha";
+  String fullName = "Raushan Jha";
 
-  var email = "raushan@gmail.com";
+  String email = "raushan@gmail.com";
 
   initMethod(BuildContext context) async {
     // var hasPermissions = await _permissionsService.getPermission(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    firstName = prefs.getString(UserDetails.firstname.toString())!;
-    lastName = prefs.getString(UserDetails.lastname.toString())!;
-    fullName = prefs.getString(UserDetails.fullname.toString())!;
-    email = prefs.getString(UserDetails.email.toString())!;
+    try {
+      firstName = prefs.getString(UserDetails.firstname.toString())!;
+      lastName = prefs.getString(UserDetails.lastname.toString())!;
+      fullName = prefs.getString(UserDetails.fullname.toString())!;
+      email = prefs.getString(UserDetails.email.toString())!;
+    } catch (e) {
+      log(e.toString());
+    }
 
     notifyListeners();
   }

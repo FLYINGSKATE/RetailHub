@@ -100,14 +100,21 @@ class _DashboardViewState extends State<DashboardView>
                                   child: Row(
                                     children: [
                                       Text(
-                                        '${viewModel?.firstName[0].toUpperCase()}',
+                                        viewModel.firstName.isNotEmpty
+                                            ? viewModel.firstName[0]
+                                                .toUpperCase()
+                                            : 'R',
                                         style: TextStyle(
-                                            color: backgroundColor,
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w700),
+                                          color: backgroundColor,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                       Text(
-                                        '${viewModel?.lastName[0].toUpperCase()}',
+                                        viewModel.lastName.isNotEmpty
+                                            ? viewModel.lastName[0]
+                                                .toUpperCase()
+                                            : 'J',
                                         style: TextStyle(
                                             color: backgroundColor,
                                             fontSize: 16.sp,

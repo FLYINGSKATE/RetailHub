@@ -6,7 +6,7 @@ import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
 import '../../../constants/API.dart';
 import '../../../constants/route_names.dart';
-import '../../../model/training_model.dart';
+import '../../../model/tagsarticles_model.dart';
 import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../enums/enums.dart';
@@ -14,41 +14,41 @@ import '../../enums/enums.dart';
 class TrainingViewModel extends BaseViewModel {
   bool _isLoading = false;
   final NavigationService _navigationService = locator<NavigationService>();
+  List<TagsArticleModel> _articles = [];
 
-  initModel(BuildContext context) async {
-    await getAllEvents();
-    notifyListeners();
+  bool get isLoading => _isLoading;
+  List<TagsArticleModel> get articles => _articles;
+
+  Future<void> initModel(BuildContext context) async {
+    await getArticles();
   }
 
-  get isLoading => _isLoading;
-  showProgressBar(value) async {
+  Future<void> getArticles() async {
+    showProgressBar(true);
+    await ApiServices.getRequest(
+      url: API.articlesbyTag + "1291",
+      onSuccess: (data) async {
+        showProgressBar(false);
+        final searchData = tagsArticleModelFromJson(data.toString());
+        _articles = searchData;
+        log('Length: ${_articles.length}');
+        notifyListeners();
+      },
+      onError: (String message, bool isError) async {
+        showProgressBar(false);
+        notifyListeners();
+        log("ERROR$message");
+      },
+    );
+  }
+
+  void navigateToDetails(TagsArticleModel blogs) {
+    _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
+  }
+
+  void showProgressBar(bool value) {
     _isLoading = value;
     notifyListeners();
   }
-
-  List<TrainingModel> trainingitems = [];
-  getAllEvents() async {
-    showProgressBar(true);
-    ApiServices.getRequest(
-        url: API.training,
-        onSuccess: (data) async {
-          showProgressBar(false);
-          final List<TrainingModel>  searchData =
-              trainingModelFromJson(data.toString());
-          trainingitems = searchData;
-          log(' Length: ${trainingitems.length}');
-          notifyListeners();
-        },
-        onError: (String message, bool isError) async {
-          showProgressBar(false);
-          notifyListeners();
-          log("ERROR$message");
-        });
-  }
-
-  void navigateToDetails(TrainingModel? blogs) {
-    log("blogs!.newsTitle!");
-
-    _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
-  }
 }
+

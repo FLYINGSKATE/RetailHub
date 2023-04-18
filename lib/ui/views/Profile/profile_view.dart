@@ -13,7 +13,6 @@ import '../../widgets/text_field.dart';
 import '../../widgets/text_filed3.dart';
 import 'profile_viewmodel.dart';
 
-
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
   @override
@@ -100,14 +99,18 @@ class ProfileViewState extends State<ProfileView>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              viewModel.firstName[0].toUpperCase(),
+                              viewModel.firstName.isNotEmpty
+                                  ? viewModel.firstName[0].toUpperCase()
+                                  : 'R',
                               style: TextStyle(
                                   color: backgroundColor,
                                   fontSize: 18.sp,
                                   fontWeight: FontWeight.w700),
                             ),
                             Text(
-                              viewModel.lastName[0].toUpperCase(),
+                              viewModel.lastName.isNotEmpty
+                                  ? viewModel.lastName[0].toUpperCase()
+                                  : 'J',
                               style: TextStyle(
                                   color: backgroundColor,
                                   fontSize: 18.sp,
@@ -119,7 +122,7 @@ class ProfileViewState extends State<ProfileView>
                     ),
                   ),
                   2.h.heightBox,
-                     Visibility(
+                  Visibility(
                     visible: viewModel.isLinkedinlogin,
                     child: Center(
                       child: Image.asset(
@@ -128,7 +131,7 @@ class ProfileViewState extends State<ProfileView>
                       ),
                     ),
                   ),
-                    2.h.heightBox,
+                  2.h.heightBox,
                   Center(
                     child: Text(
                       'Account Information',
@@ -141,7 +144,7 @@ class ProfileViewState extends State<ProfileView>
                       ),
                     ),
                   ),
-               
+
                   2.h.heightBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,7 +263,7 @@ class ProfileViewState extends State<ProfileView>
         style: TextStyle(color: Colors.white),
       ),
       content: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         child: Form(
           key: _forgetformKey,
           child: Column(

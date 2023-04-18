@@ -8,12 +8,12 @@ import '../../app/app.locator.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/route_names.dart';
 import '../../constants/string.dart';
+import '../../model/article_model.dart';
 import '../../services/navigation_service.dart';
 import '../../utill/app_text_style.dart';
 
 class ArticleDetailsPage extends StatelessWidget {
   final article;
-
   ArticleDetailsPage({
     Key? key,
     required this.article,
@@ -34,19 +34,23 @@ class ArticleDetailsPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               CachedNetworkImage(
-                 
-                imageUrl:"https://fastly.picsum.photos/id/100/300/200.jpg?hmac=ONiK6jtlF-h6EIOqhPFFyhyjF3SFqQ10MYWslZmlNyI",
-                // imageUrl: article.imgur,
+                imageUrl: article.imageName,
+                placeholder: (context, url) => const Center(child: const CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+                fit: BoxFit
+                    .cover, // adjusts the size of the image to cover the entire box
+
+                height: 200, // specify the height of the box
               ),
               2.h.heightBox,
               Text(article.title, style: MyTextStyle.apptitle),
               2.h.heightBox,
-              Text(article.desc??article.description, style: MyTextStyle.bodyText),
+              Text(article.description, style: MyTextStyle.bodyText),
               2.h.heightBox,
               ElevatedButton(
                 onPressed: () {
                   _navigationService.navigateTo(innovationWebViewRoute,
-                      arguments:article.articleurl);
+                      arguments: article.articlesLink);
                 },
                 style: ElevatedButton.styleFrom(
                   primary: primaryColor,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:retailhub/model/article_model.dart';
 import 'package:retailhub/ui/widgets/myappbar.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants/app_colors.dart';
-import '../../../model/events_model.dart';
+import '../../../model/tagsarticles_model.dart';
 import '../../widgets/newsitem_widget.dart';
 import '../../widgets/nodata_widget.dart';
 import '../../widgets/progressbar_widget.dart';
@@ -49,17 +50,17 @@ class EventsViewState extends State<EventsView>
         alignment: Alignment.topCenter,
         child: Container(
                   margin: const EdgeInsets.only(left: 10, right: 10),
-                  child: (viewModel.eventsitems.isNotEmpty)
+                  child: (viewModel.articles.isNotEmpty)
                       ? ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: viewModel.eventsitems.length,
+                          itemCount: viewModel.articles.length,
                           itemBuilder: (context, index) {
-                            EventsModel? blogs = viewModel.eventsitems[index];
+                             TagsArticleModel? article = viewModel.articles[index];
                             return NewsItem(myCallback: () {
-                              viewModel.navigateToDetails(blogs);
-                            }, blogs.id.toString(), blogs.title, blogs.imgur,
-                                blogs.desc,blogs.articleurl);
+                              viewModel.navigateToDetails(article);
+                            }, article!.id.toString(), article.title, article.imageName,
+                                article.description,article.articlesLink);
                           })
                       : const NoDataWidget(message: 'No Event available')));
   }

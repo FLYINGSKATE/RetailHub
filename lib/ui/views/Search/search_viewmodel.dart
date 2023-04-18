@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:retailhub/model/article_model.dart';
-import 'package:retailhub/model/search_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
@@ -20,16 +19,10 @@ class SearchViewModel extends BaseViewModel {
   var token = "";
 
   final NavigationService _navigationService = locator<NavigationService>();
-  var filter = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   final List<String> items = List<String>.generate(20, (i) => "Item $i");
   var duplicateItems = <String>[];
   initModel(BuildContext context) async {
-    filter.addListener(() {
-      duplicateItems = items
-          .where((element) =>
-              element.toLowerCase().contains(filter.text.toLowerCase()))
-          .toList();
-    });
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     token = prefs.getString(UserDetails.token.toString())!;
@@ -50,6 +43,26 @@ class SearchViewModel extends BaseViewModel {
     showProgressBar(true);
     ApiServices.getRequest(
         url: API.articles,
+        onSuccess: (data) async {
+          showProgressBar(false);
+          final ArticleModel searchData = articleModelFromJson(data.toString());
+          searchitems = searchData.data;
+          log(' Length: ${searchitems.length}');
+          notifyListeners();
+        },
+        onError: (String message, bool isError) async {
+          showProgressBar(false);
+          notifyListeners();
+          log("ERROR$message");
+        });
+  }
+
+  searchArticles() async {
+    searchitems.clear();
+    notifyListeners();
+    showProgressBar(true);
+    ApiServices.getRequest(
+        url: '${API.articles}?search=${searchController.text}',
         onSuccess: (data) async {
           showProgressBar(false);
           final ArticleModel searchData = articleModelFromJson(data.toString());

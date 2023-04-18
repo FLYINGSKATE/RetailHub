@@ -3,7 +3,8 @@ import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
-import '../../../model/coworking_model.dart';
+import '../../../model/article_model.dart';
+import '../../../model/tagsarticles_model.dart';
 import '../../widgets/newsitem_widget.dart';
 import '../../widgets/nodata_widget.dart';
 import '../../widgets/progressbar_widget.dart';
@@ -67,17 +68,17 @@ class CoworkingViewState extends State<CoworkingView>
         alignment: Alignment.topCenter,
         child: Container(
                   margin: const EdgeInsets.only(left: 10, right: 10),
-                  child: (viewModel.coworkingsitems.isNotEmpty)
+                  child:(viewModel.articles.isNotEmpty)
                       ? ListView.builder(
                           physics: const AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: viewModel.coworkingsitems.length,
+                          itemCount: viewModel.articles.length,
                           itemBuilder: (context, index) {
-                            Datum? blogs = viewModel.coworkingsitems[index];
+                             TagsArticleModel? article = viewModel.articles[index];
                             return NewsItem(myCallback: () {
-                              viewModel.navigateToDetails(blogs);
-                            }, blogs.id, blogs.title, blogs.imgur,
-                                blogs.desc,blogs.articleurl);
+                              viewModel.navigateToDetails(article);
+                            }, article!.id.toString(), article.title, article.imageName,
+                                article.description,article.articlesLink);
                           })
                       : const NoDataWidget(message: 'No Coworking available')));
   }

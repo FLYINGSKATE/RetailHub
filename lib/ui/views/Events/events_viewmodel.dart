@@ -1,53 +1,52 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:retailhub/model/events_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:retailhub/model/tagsarticles_model.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
 import '../../../constants/API.dart';
 import '../../../constants/route_names.dart';
 import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
-import '../../enums/enums.dart';
 
 class EventsViewModel extends BaseViewModel {
   bool _isLoading = false;
   final NavigationService _navigationService = locator<NavigationService>();
+  List<TagsArticleModel> _articles = [];
 
+  bool get isLoading => _isLoading;
+  List<TagsArticleModel> get articles => _articles;
 
-  initModel(BuildContext context) async {
-    await getAllEvents();
-    notifyListeners();
+  Future<void> initModel(BuildContext context) async {
+    await getArticles();
   }
 
-  get isLoading => _isLoading;
-  showProgressBar(value) async {
+  Future<void> getArticles() async {
+    showProgressBar(true);
+    await ApiServices.getRequest(
+      url: API.articlesbyTag + "1291",
+      onSuccess: (data) async {
+        showProgressBar(false);
+        final searchData = tagsArticleModelFromJson(data.toString());
+        _articles = searchData;
+        log('Length: ${_articles.length}');
+        notifyListeners();
+      },
+      onError: (String message, bool isError) async {
+        showProgressBar(false);
+        notifyListeners();
+        log("ERROR$message");
+      },
+    );
+  }
+
+  void navigateToDetails(TagsArticleModel blogs) {
+    _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
+  }
+
+  void showProgressBar(bool value) {
     _isLoading = value;
     notifyListeners();
   }
-
-  List<EventsModel> eventsitems = [];
-  getAllEvents() async {
-    showProgressBar(true);
-    ApiServices.getRequest(
-        url: API.events,
-        onSuccess: (data) async {
-          showProgressBar(false);
-          final List<EventsModel>  searchData = eventsModelFromJson(data.toString());
-          eventsitems = searchData;
-          log(' Length: ${eventsitems.length}');
-          notifyListeners();
-        },
-        onError: (String message, bool isError) async {
-          showProgressBar(false);
-          notifyListeners();
-          log("ERROR$message");
-        });
-  }
-
-  void navigateToDetails(EventsModel? blogs) {
-    log("blogs!.newsTitle!");
-    _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
-  }
 }
+

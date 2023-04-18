@@ -10,6 +10,7 @@ import 'package:retailhub/ui/views/Training/training_view.dart';
 import 'package:retailhub/ui/widgets/article_details.dart';
 
 import '../constants/route_names.dart';
+import '../model/article_model.dart';
 import '../ui/views/Authentication/login_view.dart';
 import '../ui/views/Authentication/signup_view.dart';
 import '../ui/views/Dashboard/dashboard_view.dart';
@@ -87,7 +88,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       case blogdetailsViewRoute:
       return _getPageRoute(
         routeName: settings.name!,
-        viewToShow:  ArticleDetailsPage(article: settings.arguments ),
+        viewToShow:  ArticleDetailsPage(article: settings.arguments),
       );
     default:
       return MaterialPageRoute(

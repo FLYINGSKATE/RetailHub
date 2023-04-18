@@ -14,9 +14,9 @@ class NoDataWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // const Icon(Icons.warning, color: Colors.grey, size: 64.0),
-            // const SizedBox(height: 8.0),
-            // Text(message, style: const TextStyle(color: Colors.grey)),
+            const Icon(Icons.warning, color: Colors.grey, size: 64.0),
+            const SizedBox(height: 8.0),
+            Text(message, style: const TextStyle(color: Colors.grey)),
           ],
         ),
       ),

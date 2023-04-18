@@ -115,7 +115,7 @@ class ApiServices {
         ),
       );
       if (kDebugMode) {
-        log('response ==> $response');
+        // log('response ==> $response');
       }
       onSuccess!(response.data);
     } catch (e) {
