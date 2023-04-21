@@ -148,8 +148,8 @@ class _HomeViewState extends State<HomeView>
                 height: 20.h,
                 decoration: const BoxDecoration(),
                 child: videoPlayerScreen(
-                    VideoPlayerController.asset(
-                      "assets/images/video.mp4",
+                    VideoPlayerController.network(
+                      CustomStrings.videoUrl,
                     ),
                     false,
                     false),

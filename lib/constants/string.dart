@@ -217,7 +217,7 @@ class CustomStrings {
   static const String mission = 'Mission button';
   static const String chat = 'Chat';
 
-  // +2000 Startups Scaleups Unicorns
+  // +2000 StartupsScaleups Unicorns
   static const String num = ' +2000\n';
   static const String startups = "Startups\nScaleups\nUnicorns";
   static const String startyourfree = 'START YOUR FREE TRIAL';
@@ -271,6 +271,8 @@ class CustomStrings {
 
   static const String CompanyName = 'Company Name';
 
-  static String signOut="Sign Out";
-    static const String signoutdesc = 'Are you sure you want\nto sign out?';
+  static String signOut = "Sign Out";
+  static const String signoutdesc = 'Are you sure you want\nto sign out?';
+  static const videoUrl =
+      "https://storage.googleapis.com/retailhub_video2/y2mate.com%20-%201000Farmacie_480p.mp4";
 }

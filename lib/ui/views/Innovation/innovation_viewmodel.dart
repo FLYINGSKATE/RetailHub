@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
+import '../../../constants/API.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/route_names.dart';
 import '../../../constants/string.dart';
+import '../../../model/tagsarticles_model.dart';
+import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../enums/enums.dart';
 
@@ -36,31 +41,41 @@ class InnovationViewModel extends BaseViewModel {
     Accenture
   ];
 
-  initModel(BuildContext context) async {
-    
+  List<TagsArticleModel> _articles = [];
+
+  bool get isLoading => _isLoading;
+  List<TagsArticleModel> get articles => _articles;
+
+  Future<void> initModel(BuildContext context) async {
+    await getArticles();
   }
-  get isLoading => _isLoading;
-  var firstName = "Raushan";
 
-  var lastName = "Jha";
+  Future<void> getArticles() async {
+    showProgressBar(true);
+    await ApiServices.getRequest(
+      url: "${API.articlesbyTag}1293",
+      onSuccess: (data) async {
+        showProgressBar(false);
+        final searchData = tagsArticleModelFromJson(data.toString());
+        _articles = searchData;
+        log('Length: ${_articles.length}');
+        notifyListeners();
+      },
+      onError: (String message, bool isError) async {
+        showProgressBar(false);
+        notifyListeners();
+        log("ERROR$message");
+      },
+    );
+  }
 
-  var fullName = "Raushan Jha";
+  void navigateToDetails(TagsArticleModel blogs) {
+    _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
+  }
 
-  var email = "raushan@gmail.com";
-  showProgressBar(value) async {
+ void showProgressBar(bool value) {
     _isLoading = value;
     notifyListeners();
-  }
-
-  Future<void> logOutUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool(UserDetails.islogin.toString(), false);
-    _navigationService.popAllAndNavigateTo(loginViewRoute);
-  }
-
-  void navigateToPrivacy(title, fileName) {
-    var pageObj = {"title": title, "fileName": fileName};
-    _navigationService.navigateTo(privacyviewRoute, arguments: pageObj);
   }
 
   navigateToWebView() {

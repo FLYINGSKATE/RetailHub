@@ -43,16 +43,16 @@ class ProfileViewState extends State<ProfileView>
                     fontWeight: FontWeight.w600),
               ),
               centerTitle: true,
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Icon(
-                    Icons.help,
-                    color: Color.fromARGB(255, 255, 255, 255),
-                  ),
-                )
-              ],
-              elevation: 0,
+              // actions: const [
+              //   Padding(
+              //     padding: EdgeInsets.symmetric(horizontal: 20),
+              //     child: Icon(
+              //       Icons.help,
+              //       color: Color.fromARGB(255, 255, 255, 255),
+              //     ),
+              //   )
+              // ],
+              // elevation: 0,
               backgroundColor: const Color.fromARGB(255, 0, 0, 0),
             ),
             resizeToAvoidBottomInset: false,

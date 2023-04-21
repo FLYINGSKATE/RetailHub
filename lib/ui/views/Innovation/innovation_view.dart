@@ -1,14 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
+import '../../../app/app.locator.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_strings.dart';
+import '../../../constants/route_names.dart';
 import '../../../constants/string.dart';
+import '../../../model/tagsarticles_model.dart';
+import '../../../services/navigation_service.dart';
 import '../../../utill/app_text_style.dart';
 import '../../../utill/helper.dart';
 import '../../widgets/header_widget.dart';
+import '../../widgets/newsitem_widget.dart';
+import '../../widgets/nodata_widget.dart';
 import '../../widgets/progressbar_widget.dart';
 import '../../widgets/text_filed3.dart';
 import 'innovation_viewmodel.dart';
@@ -23,6 +30,8 @@ class InnovationView extends StatefulWidget {
 
 class InnovationViewState extends State<InnovationView>
     with SingleTickerProviderStateMixin {
+  final NavigationService _navigationService = locator<NavigationService>();
+  final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
@@ -458,7 +467,7 @@ class InnovationViewState extends State<InnovationView>
               // endIndent: 15
             ),
             const Divider(
-              thickness: 0.8, color: const Color(0xff646464),
+              thickness: 0.8, color: Color(0xff646464),
               // indent: 15
             ),
             5.h.heightBox,
@@ -550,7 +559,7 @@ class InnovationViewState extends State<InnovationView>
                 ),
                 const Divider(
                   thickness: 0.8,
-                  color: const Color(0xff646464),
+                  color: Color(0xff646464),
                 ),
                 3.h.heightBox,
                 Padding(
@@ -838,13 +847,15 @@ class InnovationViewState extends State<InnovationView>
                 2.h.heightBox,
                 const Divider(
                   thickness: 0.8,
-                  color: const Color(0xff646464),
+                  color: Color(0xff646464),
                 ),
                 3.h.heightBox,
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 1.5.h, vertical: 3.h),
                   child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 550,
                     decoration: BoxDecoration(
                         color: greycolor,
                         borderRadius: BorderRadius.circular(33)),
@@ -853,7 +864,7 @@ class InnovationViewState extends State<InnovationView>
                           EdgeInsets.symmetric(horizontal: 3.h, vertical: 3.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                             decoration: BoxDecoration(
@@ -870,42 +881,108 @@ class InnovationViewState extends State<InnovationView>
                             ),
                           ),
                           2.h.heightBox,
-                          Text(
-                            CustomStrings.categorymanagement,
-                            style: MyTextStyle.mobilehome,
-                          ),
-                          3.h.heightBox,
-                          Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 2.h, horizontal: 10.h),
-                                child: Text(
-                                  CustomStrings.seemore,
-                                  style: MyTextStyle.button1,
-                                ),
-                              ),
-                            ),
-                          ),
-                          3.h.heightBox,
-                          Image.asset(mask),
-                          2.h.heightBox,
+                          Container(
+                              height: 460,
+                              margin:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: (viewModel.articles.isNotEmpty)
+                                  ? PageView.builder(
+                                      controller: _pageController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: viewModel.articles.length,
+                                      itemBuilder: (context, index) {
+                                        TagsArticleModel? article =
+                                            viewModel.articles[index];
+                                        return InkWell(
+                                          onTap: () {
+                                            viewModel
+                                                .navigateToDetails(article);
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                article.title,
+                                                maxLines: 3,
+                                                style: MyTextStyle.mobilehome,
+                                              ),
+                                              3.h.heightBox,
+                                              InkWell(
+                                                onTap: () {
+                                                  _navigationService.navigateTo(
+                                                      innovationWebViewRoute,
+                                                      arguments:
+                                                          article.articlesLink);
+                                                },
+                                                child: Center(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: primaryColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 2.h,
+                                                              horizontal: 10.h),
+                                                      child: Text(
+                                                        "More Info",
+                                                        style:
+                                                            MyTextStyle.button1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              3.h.heightBox,
+                                              CachedNetworkImage(
+                                                imageUrl: article.imageName,
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        const Icon(Icons.error),
+                                                fit: BoxFit.cover,
+                                                height: 210,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : const NoDataWidget(
+                                      message: 'No Article available')),
                         ],
                       ),
                     ),
                   ),
                 ),
-                3.h.heightBox,
+                1.h.heightBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(backarrow, scale: 3),
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.previousPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Image.asset(backarrow, scale: 3),
+                    ),
                     2.h.widthBox,
-                    Image.asset(backarrow1, scale: 3),
+                    GestureDetector(
+                      onTap: () {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: Image.asset(backarrow1, scale: 3),
+                    ),
                   ],
                 ),
                 5.h.heightBox,
@@ -1010,7 +1087,7 @@ class InnovationViewState extends State<InnovationView>
                       5.h.heightBox,
                       const Divider(
                         thickness: 0.8,
-                        color: const Color(0xff646464),
+                        color: Color(0xff646464),
                       ),
                       5.h.heightBox,
                       Image.asset(logoasset, scale: 4),
@@ -1120,7 +1197,7 @@ class InnovationViewState extends State<InnovationView>
                       5.h.heightBox,
                       const Divider(
                         thickness: 0.8,
-                        color: const Color(0xff646464),
+                        color: Color(0xff646464),
                       ),
                     ],
                   ),

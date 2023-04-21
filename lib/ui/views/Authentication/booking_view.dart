@@ -172,7 +172,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                       const EdgeInsets.symmetric(vertical: 2),
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
-                                  value:    viewModel.bookingagreecheck,
+                                  value: viewModel.bookingagreecheck,
                                   onChanged: (bool? value) {
                                     viewModel.bookingagreecheck = value;
                                     viewModel.notifyListeners();
@@ -187,9 +187,11 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             ),
                             1.h.heightBox,
                             ElevatedButton(
-                              onPressed: (){},
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                primary: viewModel.bookingagreecheck!?primaryColor:Colors.grey,
+                                primary: viewModel.bookingagreecheck!
+                                    ? primaryColor
+                                    : Colors.grey,
                                 onPrimary: const Color(0xff394512),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
@@ -221,7 +223,8 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                               children: [
                                 Container(
                                   height: 1,
-                                  width: MediaQuery.of(context).size.width/2.5,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
                                   color: Colors.white30,
                                   margin: const EdgeInsets.only(
                                       left: 10.0, right: 10.0),
@@ -233,7 +236,8 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 1.h.widthBox,
                                 Container(
                                   height: 1,
-                                  width: MediaQuery.of(context).size.width/2.5,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
                                   color: Colors.white30,
                                   // margin:
                                   //     const EdgeInsets.only(left: 1.0, right: 2.0),
@@ -265,13 +269,15 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             ),
                             3.h.heightBox,
                             ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                // await viewModel.linkedinLogin(
+                                //     context, "LINK", "USER", "lin1@gmail.com");
+
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute<void>(
                                     builder: (final BuildContext context) =>
                                         LinkedInUserWidget(
-                                        
                                       appBar: AppBar(
                                         backgroundColor: backgroundColor,
                                         title: const Text('Retail Hub'),
@@ -313,12 +319,15 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                               .firstName!.localized!.label!,
                                           lastName: linkedInUser
                                               .user.lastName!.localized!.label!,
-                                          email: linkedInUser.user
+                                          email: linkedInUser
+                                              .user
                                               .email!
                                               .elements![0]
                                               .handleDeep!
                                               .emailAddress!,
-                                          profileImageUrl: linkedInUser.user.profilePicture!
+                                          profileImageUrl: linkedInUser
+                                              .user
+                                              .profilePicture!
                                               .displayImageContent!
                                               .elements![0]
                                               .identifiers![0]
@@ -331,20 +340,33 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                                 .localized!.label!,
                                             linkedInUser.user.lastName!
                                                 .localized!.label!,
-                                            linkedInUser.user
+                                            linkedInUser
+                                                .user
                                                 .email!
                                                 .elements![0]
                                                 .handleDeep!
                                                 .emailAddress!,
-                                            linkedInUser.user.profilePicture!
+                                            linkedInUser
+                                                .user
+                                                .profilePicture!
                                                 .displayImageContent!
                                                 .elements![0]
                                                 .identifiers![0]
                                                 .identifier!);
 
-
-                                        await viewModel.signIn(context);
-                                    
+                                        // ignore: use_build_context_synchronously
+                                        await viewModel.linkedinLogin(
+                                            context,
+                                            linkedInUser.user.firstName!
+                                                .localized!.label!,
+                                            linkedInUser.user.lastName!
+                                                .localized!.label!,
+                                            linkedInUser
+                                                .user
+                                                .email!
+                                                .elements![0]
+                                                .handleDeep!
+                                                .emailAddress!);
                                       },
                                     ),
                                     fullscreenDialog: true,
