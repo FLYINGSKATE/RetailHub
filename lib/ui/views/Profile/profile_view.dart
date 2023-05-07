@@ -75,10 +75,11 @@ class ProfileViewState extends State<ProfileView>
   Widget _bodyWidget(ProfileViewModel viewModel) {
     return Container(
         height: double.infinity,
+        color: Colors.white,
         width: double.infinity,
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Form(
             key: formkey,
             child: Padding(
@@ -110,7 +111,7 @@ class ProfileViewState extends State<ProfileView>
                             Text(
                               viewModel.lastName.isNotEmpty
                                   ? viewModel.lastName[0].toUpperCase()
-                                  : 'J',
+                                  : 'H',
                               style: TextStyle(
                                   color: backgroundColor,
                                   fontSize: 18.sp,
@@ -166,22 +167,21 @@ class ProfileViewState extends State<ProfileView>
                       ),
                     ],
                   ),
-                  // 2.h.heightBox,
-                  // Visibility(
-                  //   visible: !viewModel.isLinkedinlogin,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Flexible(
-                  //         child: CustomTextField3(
-                  //             readOnly: true,
-                  //             hintText: 'Phone',
-                  //             label: 'Phone',
-                  //             textEditingController: viewModel.phoneController),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  2.h.heightBox,
+                  Visibility(
+                    // visible: !viewModel.isLinkedinlogin,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: CustomTextField3(
+                              hintText: 'Phone',
+                              label: 'Phone',
+                              textEditingController: viewModel.phoneController),
+                        ),
+                      ],
+                    ),
+                  ),
                   2.h.heightBox,
                   Row(
                     children: [

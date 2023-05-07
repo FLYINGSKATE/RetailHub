@@ -91,7 +91,7 @@ class ApiServices {
         onError!("Incorrect", true);
       }
     } on DioError catch (e) {
-      onError!("Incorrect", true);
+      onError!(e.message, true);
       log("dio error ${e.message}");
     }
     return;
@@ -128,6 +128,39 @@ class ApiServices {
         if (kDebugMode) {
           print('error ==> $e');
         }
+      }
+    }
+    return;
+  }
+
+  static Future<void> putRequestwithAuthToken(
+      {String? url,
+      String? authToken,
+      Function? onError,
+      Function? onSuccess,
+      Map<String, dynamic>? params}) async {
+    //  Fimber.i('API URL ==> $url');
+    dio.options.headers['Accept'] = 'application/json';
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] = 'Bearer ${authToken!}';
+
+    try {
+      print("url $url");
+      print("params $params");
+      var response = await dio.put(
+        url!,
+        data: params,
+      );
+      onSuccess!(response.data);
+    } catch (e) {
+      print('error ==> $e');
+
+      if (e is DioError) {
+        print('error ==> ${e.response}');
+        onError!(e.response!.statusCode.toString(), true);
+      } else {
+        onError!(e.toString(), false);
+        print('error ==> $e');
       }
     }
     return;

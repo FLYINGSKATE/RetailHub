@@ -33,9 +33,9 @@ class LoginViewModel extends BaseViewModel {
   UserObject? user;
   bool? bookingagreecheck = false;
   bool logoutUser = false;
-  String redirectUrl = 'https://retailhub.ai';
-  String clientId = '78xzn31nt0vowr';
-  String clientSecret = '7GeHJjmaX7P1HjP5';
+  String redirectUrl = 'https://app.retailhub.ai/';
+  String clientId = '78k5xejwubg8ep';
+  String clientSecret = 'd6YEzQi38Fzeebe1';
   final List<bool> steps = [
     true,
     false,
@@ -91,6 +91,8 @@ class LoginViewModel extends BaseViewModel {
             prefs.setString(UserDetails.fullname.toString(),
                 userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
+            prefs.setString(
+                UserDetails.phoneNumber.toString(), userData.phoneNumber);
             prefs.setString(UserDetails.token.toString(), user.data.token);
             BaseCommonMethods.showSnackbar(
               context: context,
@@ -153,13 +155,13 @@ class LoginViewModel extends BaseViewModel {
           onError: (String message, bool isError) async {
             BaseCommonMethods.showSnackbar(
               context: context,
-              msg: "Please check username and password",
+              msg: "User already registered",
             );
             await showProgressBar(false);
           });
     } catch (e) {
       BaseCommonMethods.appToast(
-          msg: "Please check username and password", time: 7000);
+          msg: "User already registered", time: 7000);
 
       await showProgressBar(false);
     }
@@ -170,7 +172,7 @@ class LoginViewModel extends BaseViewModel {
 
     try {
       ApiServices.postRequest(
-          url: API.forgetpassword,
+          url: "${API.forgetpassword}/${emailController.text}",
           params: {
             "email": emailController.text,
           },
@@ -207,6 +209,7 @@ class LoginViewModel extends BaseViewModel {
   linkedinLogin(context, fn, ln, email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString(UserDetails.password.toString(), "");
+    // email = "rjha1@gmail.comm";
     await showProgressBar(true);
     try {
       ApiServices.postRequest(
@@ -231,8 +234,8 @@ class LoginViewModel extends BaseViewModel {
             prefs.setString(UserDetails.email.toString(), userData.email);
             prefs.setBool(UserDetails.isLinkedinlogin.toString(), true);
 
-            // prefs.setString(
-            //     UserDetails.phoneNumber.toString(), userData.);
+            prefs.setString(
+                UserDetails.phoneNumber.toString(), userData.phoneNumber);
             prefs.setString(UserDetails.token.toString(), user.data.token);
             BaseCommonMethods.showSnackbar(
               context: context,
@@ -242,48 +245,7 @@ class LoginViewModel extends BaseViewModel {
           },
           onError: (String message, bool isError) async {
             try {
-              ApiServices.postRequest(
-                  url: API.register,
-                  params: {
-                    "firstName": fn,
-                    "lastName": ln,
-                    "email": email,
-                    "phoneNumber": " ",
-                    "isLinkedinUser": true
-                  },
-                  onSuccess: (Map data) async {
-                    await showProgressBar(false);
-                    log('registewr data: ${data}');
-                    final RegisterUserModel user =
-                        registerUserModelFromJson(json.encode(data).toString());
-
-                    var userData = user.user;
-                    prefs.setBool(UserDetails.islogin.toString(), true);
-
-                    prefs.setString(UserDetails.imgurl.toString(), "null");
-                    prefs.setString(
-                        UserDetails.firstname.toString(), userData.firstName);
-                    prefs.setString(
-                        UserDetails.lastname.toString(), userData.lastName);
-                    prefs.setString(UserDetails.fullname.toString(),
-                        userData.firstName + userData.lastName);
-                    prefs.setString(
-                        UserDetails.email.toString(), userData.email);
-                    prefs.setString(
-                        UserDetails.token.toString(), userData.email);
-                    BaseCommonMethods.showSnackbar(
-                      context: context,
-                      msg: "Login successful",
-                    );
-                    _navigationService.popAllAndNavigateTo(dashboardViewRoute);
-                  },
-                  onError: (String message, bool isError) async {
-                    BaseCommonMethods.showSnackbar(
-                      context: context,
-                      msg: "Unable to login with linkedin",
-                    );
-                    await showProgressBar(false);
-                  });
+              await linkedinsignup(fn, ln, email, context);
             } catch (e) {
               BaseCommonMethods.appToast(
                   msg: "Unable to login with linkedin", time: 7000);
@@ -297,6 +259,47 @@ class LoginViewModel extends BaseViewModel {
 
       await showProgressBar(false);
     }
+  }
+
+  linkedinsignup(fn, ln, email, context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    ApiServices.postRequest(
+        url: API.register,
+        params: {
+          "firstName": fn,
+          "lastName": ln,
+          "email": email,
+          "phoneNumber": "0000000000",
+          "isLinkedinUser": true
+        },
+        onSuccess: (Map data) async {
+          await showProgressBar(false);
+          log('registewr data: ${data}');
+          final RegisterUserModel user =
+              registerUserModelFromJson(json.encode(data).toString());
+
+          var userData = user.user;
+          prefs.setBool(UserDetails.islogin.toString(), true);
+
+          prefs.setString(UserDetails.imgurl.toString(), "null");
+          prefs.setString(UserDetails.firstname.toString(), userData.firstName);
+          prefs.setString(UserDetails.lastname.toString(), userData.lastName);
+          prefs.setString(UserDetails.fullname.toString(),
+              userData.firstName + userData.lastName);
+          prefs.setString(UserDetails.email.toString(), userData.email);
+          prefs.setString(UserDetails.token.toString(), userData.email);
+          log("linkedin user registerd");
+          await linkedinLogin(context, fn, ln, email);
+        },
+        onError: (var message, bool isError) async {
+          BaseCommonMethods.showSnackbar(
+            context: context,
+            msg: "Unable to register with linkedin ",
+          );
+          await showProgressBar(false);
+          Navigator.pop(context);
+        });
   }
 
   saveSharedData(String fname, lname, email, profile) async {

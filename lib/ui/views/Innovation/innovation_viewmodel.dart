@@ -53,7 +53,7 @@ class InnovationViewModel extends BaseViewModel {
   Future<void> getArticles() async {
     showProgressBar(true);
     await ApiServices.getRequest(
-      url: "${API.articlesbyTag}1293",
+      url: "${API.articlesbyTag}Innovation Explorer",
       onSuccess: (data) async {
         showProgressBar(false);
         final searchData = tagsArticleModelFromJson(data.toString());

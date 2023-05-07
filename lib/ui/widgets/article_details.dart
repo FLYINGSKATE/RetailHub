@@ -28,48 +28,51 @@ class ArticleDetailsPage extends StatelessWidget {
         title: Text(article.title),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: backgroundColor,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              CachedNetworkImage(
-                imageUrl: article.imageName,
-                placeholder: (context, url) => const Center(child: const CircularProgressIndicator()),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                fit: BoxFit
-                    .cover, // adjusts the size of the image to cover the entire box
-
-                height: 200, // specify the height of the box
-              ),
-              2.h.heightBox,
-              Text(article.title, style: MyTextStyle.apptitle),
-              2.h.heightBox,
-              Text(article.description, style: MyTextStyle.bodyText),
-              2.h.heightBox,
-              ElevatedButton(
-                onPressed: () {
-                  _navigationService.navigateTo(innovationWebViewRoute,
-                      arguments: article.articlesLink);
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: primaryColor,
-                  onPrimary: const Color(0xff394512),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                CachedNetworkImage(
+                  imageUrl: article.imageName,
+                  placeholder: (context, url) => const Center(child: const CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fit: BoxFit
+                      .cover, // adjusts the size of the image to cover the entire box
+          
+                  height: 200, // specify the height of the box
                 ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 1.5.h),
-                    child: Text(
-                      CustomStrings.readfull,
-                      style: MyTextStyle.button,
+                2.h.heightBox,
+                Text(article.title, style: MyTextStyle.apptitle),
+                2.h.heightBox,
+                Text(article.description, style: MyTextStyle.bodyText),
+                2.h.heightBox,
+                ElevatedButton(
+                  onPressed: () {
+                    _navigationService.navigateTo(innovationWebViewRoute,
+                        arguments: article.articlesLink);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: primaryColor,
+                    onPrimary: const Color(0xff394512),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 1.5.h),
+                      child: Text(
+                        CustomStrings.readfull,
+                        style: MyTextStyle.button,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

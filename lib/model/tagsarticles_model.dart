@@ -41,7 +41,7 @@ class TagsArticleModel {
     dynamic imagedata;
     String imageName;
     dynamic imageType;
-    AreaInterest areaInterest;
+    var areaInterest;
     String restricted;
     DateTime createdAt;
     DateTime updatedAt;
@@ -60,7 +60,7 @@ class TagsArticleModel {
         imagedata: json["imagedata"],
         imageName: json["image_name"],
         imageType: json["image_type"],
-        areaInterest: AreaInterest.fromJson(json["area_interest"]),
+        areaInterest:"",
         restricted: json["restricted"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -114,7 +114,7 @@ class Tag {
 
     String id;
     String name;
-    String nameLowerCase;
+    String? nameLowerCase;
     ArticleTag articleTag;
 
     factory Tag.fromJson(Map<String, dynamic> json) => Tag(

@@ -32,6 +32,8 @@ class CustomStrings {
   static const String emailaddress1 = 'Email address';
   static const String password = 'Password';
   static const String forgotyourpassword = 'Forgot your password?';
+  static const String termsconditionlink = 'https://retailhub.ai/terms-service';
+ 
 
   // step2.1 RH
   static const String businessemail = 'Business E-mail';

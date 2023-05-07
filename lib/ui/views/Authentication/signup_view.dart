@@ -1,18 +1,23 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../../app/app.locator.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_strings.dart';
+import '../../../constants/route_names.dart';
 import '../../../constants/string.dart';
+import '../../../services/navigation_service.dart';
 import '../../../utill/app_text_style.dart';
 import '../../widgets/CustomStepper.dart';
 import '../../widgets/FormHeader.dart';
 import '../../widgets/basecommon_widget.dart';
 import '../../widgets/text_field.dart';
 import 'login_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
@@ -43,7 +48,7 @@ class SignUpView extends StatelessWidget {
   }
 }
 
-bool? check = true;
+bool? check = false;
 
 class BodyWidget extends ViewModelWidget<LoginViewModel> {
   const BodyWidget({
@@ -77,13 +82,13 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                       ),
                     ),
                   ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: CustomStepper()),
+                  // Container(
+                  //     margin: const EdgeInsets.only(top: 10),
+                  //     child: CustomStepper()),
                   Form(
                     key: formkey,
                     child: Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 20),
                       decoration: BoxDecoration(
                           color: greycolor,
                           borderRadius: BorderRadius.circular(33)),
@@ -184,30 +189,50 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 data: ThemeData(
                                     unselectedWidgetColor: Colors.white),
                                 child: CheckboxListTile(
-                                  activeColor: primaryColor,
-                                  checkColor: Colors.white,
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  value: check,
-                                  onChanged: (bool? value) {
-                                    check = value;
-                                    viewModel.notifyListeners();
-                                  },
-                                  title: const Text(''),
-                                  subtitle: Text(
-                                    CustomStrings.iagree,
-                                    style: MyTextStyle.agreetext,
-                                  ),
-                                ),
+                                    activeColor: primaryColor,
+                                    checkColor: Colors.white,
+                                    contentPadding:
+                                        const EdgeInsets.symmetric(vertical: 2),
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    value: check,
+                                    onChanged: (bool? value) {
+                                      check = value;
+                                      viewModel.notifyListeners();
+                                    },
+                                    title: const Text(''),
+                                    subtitle: RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: 'I Agree to the RetailHub’s ',
+                                          ),
+                                          TextSpan(
+                                            text: "Terms And Condition",
+                                            style: const TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              color: Colors.blue,
+                                            ),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap =
+                                                  () => _launchUrl(context),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                ', Privacy Policy and Security Policy, including Cookie Use Policy',
+                                            style: MyTextStyle.agreetext,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                               ),
                             ),
                             2.h.heightBox,
                             ElevatedButton(
                               onPressed: check!
-                                  ? () =>
-                                      completeRegisteration(viewModel, context,formkey)
+                                  ? () => completeRegisteration(
+                                      viewModel, context, formkey)
                                   : null,
                               style: ElevatedButton.styleFrom(
                                 primary: primaryColor,
@@ -240,6 +265,22 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
         );
       },
     );
+  }
+
+  void _launchUrl(BuildContext context) async {
+    final NavigationService _navigationService = locator<NavigationService>();
+
+    _navigationService.navigateTo(innovationWebViewRoute,
+        arguments: CustomStrings.termsconditionlink);
+    // if (await canLaunch(CustomStrings.termsconditionlink)) {
+    //   await launch(CustomStrings.termsconditionlink);
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Error launching URL'),
+    //     ),
+    //   );
+    // }
   }
 
   completeRegisteration(LoginViewModel viewModel, context, formkey) {

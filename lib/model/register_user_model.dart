@@ -17,7 +17,7 @@ class RegisterUserModel {
 
     String message;
     User user;
-    bool success;
+    var success;
 
     factory RegisterUserModel.fromJson(Map<String, dynamic> json) => RegisterUserModel(
         message: json["message"],

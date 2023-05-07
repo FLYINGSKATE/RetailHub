@@ -10,7 +10,6 @@ class loadingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: isLoading ? Colors.black : null,
-      margin: const EdgeInsets.only(top: 10),
       height: double.infinity,
       child: isLoading
           ? const Center(

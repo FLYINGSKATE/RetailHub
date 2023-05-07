@@ -8,7 +8,7 @@ class API {
   static String forgetpassword = "$apiURL/forgetPassword";
   static String changePassword = "$apiURL/password/update";
   static String updateAccount =
-      "$apiURL/settings/retailer/update-account-information";
+      "$apiURL/update/profile";
 
 //Articles
   static String articles = "$apiURL/articles";
