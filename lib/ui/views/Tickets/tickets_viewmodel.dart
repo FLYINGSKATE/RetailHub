@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:retailhub/model/ticket_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
@@ -17,14 +19,18 @@ class TicketsViewModel extends BaseViewModel {
 
   var privacyData;
 
+  List<TicketModal> _tickets = [];
+
+  bool get isLoading => _isLoading;
+  List<TicketModal> get tickets => _tickets;
+
   initModel(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    email = prefs.getString(UserDetails.email.toString()) ?? '';
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+   // email = prefs.getString(UserDetails.email.toString()) ?? '';
+    getTickets();
     notifyListeners();
-    getMeetings();
   }
 
-  get isLoading => _isLoading;
  
 
   showProgressBar(value) async {
@@ -32,10 +38,24 @@ class TicketsViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  getMeetings() {
+  getTickets() async {
     showProgressBar(true);
-   
+    await FirebaseFirestore.instance
+        .collection('/Tickets').get()
+        .then((QuerySnapshot querySnapshot) {
+      print(" Tickets");
+      print(querySnapshot.docs.first.data());
+      querySnapshot.docs.forEach((doc) {
+        print(doc.id);
+        print(doc.data());
+        _tickets.add(TicketModal.fromJson(doc.data() as Map<String, dynamic>) as TicketModal);
+      });
+    }).onError((error, stackTrace) {
+      print("Firebase Error");
+      print(error);
+    });
+    notifyListeners();
+
   }
 
-  
 }

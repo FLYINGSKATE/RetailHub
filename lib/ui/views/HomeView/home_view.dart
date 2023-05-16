@@ -89,20 +89,22 @@ class _HomeViewState extends State<HomeView>
                 height: 25.h,
                 child: ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount: viewModel.imageList.length,
+                  itemCount: viewModel.eventsArticles.length<6?viewModel.eventsArticles.length:6,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
+                    viewModel.eventsArticles[index].imageName = viewModel.eventsArticles[index].imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
                     return InkWell(
                       onTap: (() {
-                        // Get.toNamed(RoutesName.homePageEvent1);
+
+                        viewModel.navigateToDetails(viewModel.eventsArticles[index]);
                       }),
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         margin: const EdgeInsets.all(10),
-                        child: Image.asset(
-                          viewModel.imageList[index],
+                        child: Image.network(
+                          viewModel.eventsArticles[index].imageName,
                         ),
                       ),
                     );
@@ -237,20 +239,22 @@ class _HomeViewState extends State<HomeView>
                 height: 25.h,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: viewModel.imageList1.length,
+                  itemCount: viewModel.trainingArticles.length>6?6:viewModel.trainingArticles.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
+                    viewModel.trainingArticles[index].imageName = viewModel.trainingArticles[index].imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
+
                     return InkWell(
                       onTap: (() {
-                        print('list');
+                        viewModel.navigateToDetails(viewModel.trainingArticles[index]);
                       }),
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         margin: const EdgeInsets.all(10),
-                        child: Image.asset(
-                          viewModel.imageList1[index],
+                        child: Image.network(
+                          viewModel.trainingArticles[index].imageName,
                         ),
                       ),
                     );

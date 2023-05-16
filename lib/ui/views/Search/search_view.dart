@@ -20,44 +20,55 @@ class _SearchViewState extends State<SearchView>
     return ViewModelBuilder.reactive(
       builder:
           (BuildContext? context, SearchViewModel? viewModel, Widget? child) {
-        return Scaffold(
-            backgroundColor: backgroundColor,
-            appBar: AppBar(
+        return DefaultTabController(
+          length: 2,
+          child: Scaffold(
               backgroundColor: backgroundColor,
-              title: TextField(
-                controller: viewModel?.searchController,
-                style: const TextStyle(color: white),
-                textInputAction: TextInputAction.search,
-                onChanged: (ss) {
-                  viewModel?.searchArticles();
-                },
-                onEditingComplete: (() => viewModel?.searchArticles()),
-                onSubmitted: ((value) {
-                  viewModel?.searchArticles();
-                }),
-                decoration: const InputDecoration(
-                  hintText: "Search...",
-                  fillColor: white,
-                  hintStyle: TextStyle(color: white),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: white,
-                  ),
-                  border: InputBorder.none,
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffBEE73E)),
+
+              appBar: AppBar(
+                bottom: TabBar(
+                  indicatorColor: primaryColor,
+                  tabs: [
+                    Tab(text: "Startups"),
+                    Tab(text: "Articles")
+                  ],
+                ),
+                backgroundColor: backgroundColor,
+                title: TextField(
+                  controller: viewModel?.searchController,
+                  style: const TextStyle(color: white),
+                  textInputAction: TextInputAction.search,
+                  onChanged: (ss) {
+                    viewModel?.searchArticles();
+                  },
+                  onEditingComplete: (() => viewModel?.searchArticles()),
+                  onSubmitted: ((value) {
+                    viewModel?.searchArticles();
+                  }),
+                  decoration: const InputDecoration(
+                    hintText: "Search...",
+                    fillColor: white,
+                    hintStyle: TextStyle(color: white),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: white,
+                    ),
+                    border: InputBorder.none,
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xffBEE73E)),
+                    ),
                   ),
                 ),
               ),
-            ),
-            resizeToAvoidBottomInset: false,
-            body: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                _bodyWidget(viewModel!),
-                loadingView(viewModel.isLoading),
-              ],
-            ));
+              resizeToAvoidBottomInset: false,
+              body: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  _bodyWidget(viewModel!),
+                  loadingView(viewModel.isLoading),
+                ],
+              )),
+        );
       },
       viewModelBuilder: () => SearchViewModel(),
       onViewModelReady: (SearchViewModel model) {
@@ -75,7 +86,9 @@ class _SearchViewState extends State<SearchView>
   child: Container(
     margin: const EdgeInsets.only(left: 10, right: 10),
     child: viewModel.searchitems.isNotEmpty
-      ? ListView.builder(
+      ? TabBarView(
+      children: [
+        ListView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: viewModel.searchitems.length,
@@ -92,7 +105,30 @@ class _SearchViewState extends State<SearchView>
               blogs.articlesLink,
             );
           },
-        )
+        ),
+        ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: viewModel.searchitems.length,
+          itemBuilder: (context, index) {
+            Datum? blogs = viewModel.searchitems[index];
+            blogs.imageName = blogs.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
+            print("blogs.imageName");
+            print(blogs.imageName);
+            return NewsItem(
+              myCallback: () {
+                viewModel.navigateToDetails(blogs);
+              },
+              blogs.id,
+              blogs.title,
+              blogs.imageName,
+              blogs.description,
+              blogs.articlesLink,
+            );
+          },
+        ),
+      ],
+    )
       : const NoDataWidget(message: 'No articles found'),
   ),
 );

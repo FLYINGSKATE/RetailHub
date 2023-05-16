@@ -224,7 +224,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
       actions: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 4.5,
-          child: FlatButton(
+          child: TextButton(
             child: const Text(
               'Cancel',
               style: TextStyle(color: Colors.white),

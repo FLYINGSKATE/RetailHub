@@ -55,6 +55,9 @@ dependencies:
   chewie: ^1.4.0
   footer: ^0.0.4
   webview_flutter: ^4.0.2
+  firebase_core: ^2.11.0
+  flutter_dash: ^1.0.0
+  cloud_firestore: ^4.1.0
 
 dev_dependencies:
   flutter_test:

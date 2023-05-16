@@ -57,16 +57,16 @@ class Datum {
     bool isdeleted;
     String articlesLink;
     String title;
-    dynamic fileId;
+    dynamic? fileId;
     String startUpId;
-    dynamic imagedata;
+    dynamic? imagedata;
     String imageName;
-    dynamic imageType;
+    dynamic? imageType;
     dynamic areaInterest;
     String restricted;
     DateTime createdAt;
     DateTime updatedAt;
-    Startup startup;
+    Startup? startup;
     var tags;
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -107,7 +107,7 @@ class Datum {
         "restricted": restricted,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
-        "startup": startup.toJson(),
+        "startup": startup?.toJson(),
         "tags": List<dynamic>.from(tags.map((x) => x.toJson())),
     };
 }
@@ -204,7 +204,7 @@ class Startup {
     });
 
     String id;
-    String brandName;
+    String? brandName;
     String companyLegalName;
 
     factory Startup.fromJson(Map<String, dynamic> json) => Startup(

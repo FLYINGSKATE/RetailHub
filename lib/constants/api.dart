@@ -1,5 +1,6 @@
 class API {
-  static String domain = 'dev1.retailhub.ai';
+  static String domain = 'app.retailhub.ai';
+ // static String domain = 'dev1.retailhub.ai';
   static String baseURL = "https://$domain/";
   static String apiURL = "https://$domain/api";
 

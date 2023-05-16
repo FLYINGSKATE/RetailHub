@@ -24,7 +24,6 @@ class SearchViewModel extends BaseViewModel {
   var duplicateItems = <String>[];
   initModel(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     token = prefs.getString(UserDetails.token.toString())!;
     await getAll();
     notifyListeners();
@@ -41,10 +40,13 @@ class SearchViewModel extends BaseViewModel {
 
   getAll() async {
     showProgressBar(true);
+    print("Getting All Articles");
     ApiServices.getRequest(
         url: API.articles,
         onSuccess: (data) async {
           showProgressBar(false);
+          log("data");
+          log(data);
           final ArticleModel searchData = articleModelFromJson(data.toString());
           searchitems = searchData.data;
           log(' Length: ${searchitems.length}');

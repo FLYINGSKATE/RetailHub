@@ -55,6 +55,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
   Widget build(BuildContext context, LoginViewModel viewModel) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        var size = MediaQuery.of(context).size;
         return Scaffold(
           body: Container(
             padding: const EdgeInsets.all(10),
@@ -355,18 +356,15 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                                 .identifier!);
 
                                         // ignore: use_build_context_synchronously
-                                        await viewModel.linkedinLogin(
-                                            context,
-                                            linkedInUser.user.firstName!
-                                                .localized!.label!,
-                                            linkedInUser.user.lastName!
-                                                .localized!.label!,
-                                            linkedInUser
-                                                .user
-                                                .email!
-                                                .elements![0]
-                                                .handleDeep!
-                                                .emailAddress!);
+                                        await viewModel.linkedinsignup(
+                                            linkedInUser.user.firstName!.localized!.label!,
+                                            linkedInUser.user.lastName!.localized!.label!,linkedInUser
+                                            .user
+                                            .email!
+                                            .elements![0]
+                                            .handleDeep!
+                                            .emailAddress!,context
+                                            );
                                       },
                                     ),
                                     fullscreenDialog: true,
@@ -375,7 +373,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                               },
                               clipBehavior: Clip.none,
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(vertical: 1.h),
+                                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.h),
                                 primary: whitetext,
                                 onPrimary: const Color(0xff394512),
                                 shape: RoundedRectangleBorder(
@@ -415,6 +413,20 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                       ),
                                     ],
                                   ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: size.height*0.2,),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: CustomStrings.copyrightText,
+                                        style: MyTextStyle.smalltext),
+
+                                  ],
                                 ),
                               ),
                             ),

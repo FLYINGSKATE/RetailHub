@@ -14,6 +14,7 @@ class CustomStrings {
   static const String already = "Already have an account?";
   static const String signUptextbutton = ' Sign Up';
   static const String signIn = ' Sign in';
+  static const String copyrightText = "©️ 2023 Retail Hub Ltd | Version 1.02.04";
 
   //step1.1 RH
   static const String submitbutton = 'SUBMIT';
@@ -77,7 +78,7 @@ class CustomStrings {
   static const String seeall = 'See all';
   static const String innovationExplorer = 'Innovation Explorer';
   static const String discovermore = 'Discover more';
-  static const String coworking = 'Coworking';
+  static const String coworking = 'Co-working';
   static const String trainingcourses = 'Training courses in retail';
 
   // RH HomePageEvent1
@@ -276,5 +277,5 @@ class CustomStrings {
   static String signOut = "Sign Out";
   static const String signoutdesc = 'Are you sure you want\nto sign out?';
   static const videoUrl =
-      "https://storage.googleapis.com/retailhub_video2/y2mate.com%20-%201000Farmacie_480p.mp4";
+      "https://retailhub.ai/Immagine-di-iOS-new.mp4";
 }

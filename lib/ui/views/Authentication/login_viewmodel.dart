@@ -14,6 +14,7 @@ import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
 import '../../enums/enums.dart';
 import '../../methods/basecommon_methods.dart';
+import 'package:http/http.dart' as http;
 
 class LoginViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -118,6 +119,7 @@ class LoginViewModel extends BaseViewModel {
   registerUser(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
+
     await showProgressBar(true);
     try {
       ApiServices.postRequest(
@@ -210,96 +212,112 @@ class LoginViewModel extends BaseViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString(UserDetails.password.toString(), "");
     // email = "rjha1@gmail.comm";
+    print("APAN LOGF");
     await showProgressBar(true);
-    try {
-      ApiServices.postRequest(
-          url: API.login,
-          params: {
-            "email": email,
-            "password": '',
-          },
-          onSuccess: (Map data) async {
-            await showProgressBar(false);
-            final UserModel user =
-                userModelFromJson(json.encode(data).toString());
-            log(user.data.user.firstName);
-            var userData = user.data.user;
-            prefs.setBool(UserDetails.islogin.toString(), true);
-            prefs.setString(UserDetails.imgurl.toString(), "null");
-            prefs.setString(
-                UserDetails.firstname.toString(), userData.firstName);
-            prefs.setString(UserDetails.lastname.toString(), userData.lastName);
-            prefs.setString(UserDetails.fullname.toString(),
-                userData.firstName + userData.lastName);
-            prefs.setString(UserDetails.email.toString(), userData.email);
-            prefs.setBool(UserDetails.isLinkedinlogin.toString(), true);
 
-            prefs.setString(
-                UserDetails.phoneNumber.toString(), userData.phoneNumber);
-            prefs.setString(UserDetails.token.toString(), user.data.token);
-            BaseCommonMethods.showSnackbar(
-              context: context,
-              msg: "Login successful",
-            );
-            _navigationService.popAllAndNavigateTo(dashboardViewRoute);
-          },
-          onError: (String message, bool isError) async {
-            try {
-              await linkedinsignup(fn, ln, email, context);
-            } catch (e) {
-              BaseCommonMethods.appToast(
-                  msg: "Unable to login with linkedin", time: 7000);
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('https://dev1.retailhub.ai/api/login'));
+    request.body = json.encode({
+      "email": email,
+      "password": ''
+    });
+    request.headers.addAll(headers);
 
-              await showProgressBar(false);
-            }
-          });
-    } catch (e) {
-      BaseCommonMethods.appToast(
-          msg: "Please check username and password", time: 7000);
+    http.StreamedResponse response = await request.send();
 
+    if (response.statusCode == 200) {
+      String data = await response.stream.bytesToString();
+      print(data);
       await showProgressBar(false);
+      final UserModel user = userModelFromJson(data.toString());
+      log("user.data.user.firstName");
+      log(user.data.user.firstName);
+      log(user.data.user.email);
+      log(user.data.user.lastName);
+      log(user.data.user.isLinkedinUser.toString());
+      var userData = user.data.user;
+      prefs.setBool(UserDetails.islogin.toString(), true);
+      prefs.setString(UserDetails.imgurl.toString(), "null");
+      prefs.setString(UserDetails.firstname.toString(), userData.firstName);
+      prefs.setString(UserDetails.lastname.toString(), userData.lastName);
+      prefs.setString(UserDetails.fullname.toString(), userData.firstName + userData.lastName);
+      prefs.setString(UserDetails.email.toString(), userData.email);
+      prefs.setBool(UserDetails.isLinkedinlogin.toString(), true);
+
+      prefs.setString(UserDetails.phoneNumber.toString(), userData.phoneNumber);
+      prefs.setString(UserDetails.token.toString(), user.data.token);
+      await showProgressBar(false);
+      _navigationService.popAllAndNavigateTo(dashboardViewRoute);
     }
+    else {
+      print(response.reasonPhrase);
+      print("message");
+      BaseCommonMethods.showSnackbar(
+        context: context,
+        msg: "Please check username and password",
+      );
+      await showProgressBar(false);
+      Navigator.pop(context);
+    }
+
+
   }
 
   linkedinsignup(fn, ln, email, context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    log("fn+ln+email");
+    log(fn+ln+email);
+    await showProgressBar(true);
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('https://dev1.retailhub.ai/api/register'));
+    request.body = json.encode({
+      "firstName": fn,
+      "lastName": ln,
+      "email": email,
+      "isLinkedinUser": true,
+      "password": "",
+      "phoneNumber": "0000000000"
+    });
+    request.headers.addAll(headers);
 
-    ApiServices.postRequest(
-        url: API.register,
-        params: {
-          "firstName": fn,
-          "lastName": ln,
-          "email": email,
-          "phoneNumber": "0000000000",
-          "isLinkedinUser": true
-        },
-        onSuccess: (Map data) async {
-          await showProgressBar(false);
-          log('registewr data: ${data}');
-          final RegisterUserModel user =
-              registerUserModelFromJson(json.encode(data).toString());
+    http.StreamedResponse response = await request.send();
 
-          var userData = user.user;
-          prefs.setBool(UserDetails.islogin.toString(), true);
+    if (response.statusCode == 200) {
+      String data = await response.stream.bytesToString();
+      await showProgressBar(false);
+      log('registewr data: ${data}');
+      final RegisterUserModel user = registerUserModelFromJson(data);
+      var userData = user.user;
+      prefs.setBool(UserDetails.islogin.toString(), true);
 
-          prefs.setString(UserDetails.imgurl.toString(), "null");
-          prefs.setString(UserDetails.firstname.toString(), userData.firstName);
-          prefs.setString(UserDetails.lastname.toString(), userData.lastName);
-          prefs.setString(UserDetails.fullname.toString(),
-              userData.firstName + userData.lastName);
-          prefs.setString(UserDetails.email.toString(), userData.email);
-          prefs.setString(UserDetails.token.toString(), userData.email);
-          log("linkedin user registerd");
-          await linkedinLogin(context, fn, ln, email);
-        },
-        onError: (var message, bool isError) async {
-          BaseCommonMethods.showSnackbar(
-            context: context,
-            msg: "Unable to register with linkedin ",
-          );
-          await showProgressBar(false);
-          Navigator.pop(context);
-        });
+      prefs.setString(UserDetails.imgurl.toString(), "null");
+      prefs.setString(UserDetails.firstname.toString(), userData.firstName);
+      prefs.setString(UserDetails.lastname.toString(), userData.lastName);
+      prefs.setString(UserDetails.fullname.toString(),
+          userData.firstName + userData.lastName);
+      prefs.setString(UserDetails.email.toString(), userData.email);
+      prefs.setString(UserDetails.token.toString(), userData.email);
+      log("linkedin user registerd");
+      await linkedinLogin(context, fn, ln, email);
+    }
+    else {
+      print(response.reasonPhrase);
+      print("message");
+
+
+
+      /*BaseCommonMethods.showSnackbar(
+        context: context,
+        msg: "Unable to register with linkedin ",
+      );*/
+      await showProgressBar(false);
+      await linkedinLogin(context, fn, ln, email);
+      Navigator.pop(context);
+    }
   }
 
   saveSharedData(String fname, lname, email, profile) async {

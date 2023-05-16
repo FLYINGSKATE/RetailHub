@@ -31,7 +31,9 @@ class ProfileViewModel extends BaseViewModel {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     token = prefs.getString(UserDetails.token.toString())!;
     firstName = prefs.getString(UserDetails.firstname.toString())!;
-    position = prefs.getString(UserDetails.position.toString())!;
+    if(prefs.containsKey(UserDetails.position.toString())){
+      position = prefs.getString(UserDetails.position.toString())!;
+    }
     lastName = prefs.getString(UserDetails.lastname.toString())!;
     fullName = prefs.getString(UserDetails.fullname.toString())!;
     email = prefs.getString(UserDetails.email.toString())!;
@@ -39,7 +41,16 @@ class ProfileViewModel extends BaseViewModel {
     firstnameController.text = firstName;
     lastnameController.text = lastName;
     emailController.text = email;
-    isLinkedinlogin = prefs.getBool(UserDetails.isLinkedinlogin.toString())!;
+    if(prefs.containsKey(UserDetails.isLinkedinlogin.toString())){
+      isLinkedinlogin = prefs.getBool(UserDetails.isLinkedinlogin.toString())!;
+    }
+
+
+    print(firstName);
+    print(lastName);
+    print(firstName);
+    print(fullName);
+    print(email);
 
     notifyListeners();
   }

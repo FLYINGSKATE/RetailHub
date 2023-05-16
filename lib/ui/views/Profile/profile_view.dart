@@ -154,6 +154,7 @@ class ProfileViewState extends State<ProfileView>
                         child: CustomTextField3(
                             label: 'First name',
                             hintText: 'First name',
+
                             textEditingController:
                                 viewModel.firstnameController),
                       ),
@@ -320,7 +321,7 @@ class ProfileViewState extends State<ProfileView>
       actions: [
         SizedBox(
           width: MediaQuery.of(context).size.width / 4.5,
-          child: FlatButton(
+          child: TextButton(
             child: const Text(
               'Cancel',
               style: TextStyle(color: Colors.white),
