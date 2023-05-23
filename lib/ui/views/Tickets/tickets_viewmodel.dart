@@ -50,35 +50,39 @@ class TicketsViewModel extends BaseViewModel {
 
   getTickets() async {
     showProgressBar(true);
-    await ticketsCollectionReference.get()
-        .then((QuerySnapshot querySnapshot) {
+    await ticketsCollectionReference.get().then((QuerySnapshot querySnapshot) async {
       print("Tickets");
       print(querySnapshot.docs.first.data());
+      print(querySnapshot.docs.length);
 
       for(int i=0;i<querySnapshot.docs.length;i++){
         print(querySnapshot.docs[i].id);
         print(querySnapshot.docs[i].data());
         _tickets.add(TicketsModal.fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>) as TicketsModal);
-        querySnapshot.docs[i]["EventDetails"].get().then((eventSnapshot) {
+        await querySnapshot.docs[i]["EventDetails"].get().then((eventSnapshot) {
           print(eventSnapshot);
           print(eventSnapshot.data());
           _events.add(EventsModal.fromJson(eventSnapshot.data() as Map<String, dynamic>) as EventsModal);
         });
-        querySnapshot.docs[i]["ParticipantsDetails"].get().then((participantSnapshot) {
+        await querySnapshot.docs[i]["ParticipantsDetails"].get().then((participantSnapshot) {
           print(participantSnapshot);
           print(participantSnapshot.data());
           _participants.add(ParticipantsModal.fromJson(participantSnapshot.data() as Map<String, dynamic>) as ParticipantsModal);
         });
+
       }
     }).onError((error, stackTrace) {
       print("Firebase Error");
       print(error);
     });
+    print("Lengths");
+    print(_tickets.length);
+    print(_events.length);
+    print(_participants.length);
+    print("Lengths");
+    showProgressBar(false);
     notifyListeners();
 
   }
-
-
-
 
 }

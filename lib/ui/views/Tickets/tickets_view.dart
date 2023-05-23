@@ -42,7 +42,13 @@ class _TicketsViewState extends State<TicketsView>
               isLogo: true,
             ),
             resizeToAvoidBottomInset: false,
-            body: _bodyWidget(viewModel!));
+            body: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                _bodyWidget(viewModel!),
+                loadingView(viewModel.isLoading),
+              ],
+            ));
       },
       viewModelBuilder: () => TicketsViewModel(),
       onViewModelReady: (TicketsViewModel model) {

@@ -24,7 +24,6 @@ class _SearchViewState extends State<SearchView>
           length: 2,
           child: Scaffold(
               backgroundColor: backgroundColor,
-
               appBar: AppBar(
                 bottom: TabBar(
                   indicatorColor: primaryColor,
@@ -35,6 +34,7 @@ class _SearchViewState extends State<SearchView>
                 ),
                 backgroundColor: backgroundColor,
                 title: TextField(
+                  autofocus: true,
                   controller: viewModel?.searchController,
                   style: const TextStyle(color: white),
                   textInputAction: TextInputAction.search,
@@ -45,14 +45,19 @@ class _SearchViewState extends State<SearchView>
                   onSubmitted: ((value) {
                     viewModel?.searchArticles();
                   }),
-                  decoration: const InputDecoration(
+                  decoration:  InputDecoration(
                     hintText: "Search...",
                     fillColor: white,
+                    suffixIconColor: Colors.white,
                     hintStyle: TextStyle(color: white),
                     prefixIcon: Icon(
                       Icons.search,
                       color: white,
                     ),
+                    suffixIcon: (viewModel?.searchController.text.isEmpty??false)?null:IconButton(onPressed: ()
+                    {
+                      viewModel?.searchController.clear();
+                    }, icon: Icon(Icons.close,color: white,)),
                     border: InputBorder.none,
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xffBEE73E)),
