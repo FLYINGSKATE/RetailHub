@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:retailhub/model/participants_modal.dart';
 import 'package:retailhub/model/ticket_modal.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
@@ -8,6 +10,7 @@ import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_strings.dart';
 import '../../../constants/string.dart';
+import '../../../model/events_modal.dart';
 import '../../../utill/app_text_style.dart';
 import '../../widgets/header_widget.dart';
 import '../../widgets/myappbar.dart';
@@ -57,18 +60,19 @@ class _TicketsViewState extends State<TicketsView>
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 1.h),
-            child: Text("No Tickets Found", style: MyTextStyle.apptitle),
+            child:NoDataWidget(message: 'No Tickets Found'),
+
           ),
         )):ListView.builder(
         itemCount: viewModel.tickets.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (c,i){
-          return TicketCard(viewModel.tickets[i]);
+          return TicketCard(viewModel.tickets[i],viewModel.events[i],viewModel.participants[i]);
     });
   }
 
 
-  Widget TicketCard(TicketModal ticket) {
+  Widget TicketCard(TicketsModal ticket,EventsModal eventsModal,ParticipantsModal participantsModal) {
 
     var size = MediaQuery.of(context).size;
     final boxWidth = size.width;
@@ -78,8 +82,6 @@ class _TicketsViewState extends State<TicketsView>
 
     return Stack(
       children: [
-
-
 
         Container(
           height:size.height,
@@ -109,7 +111,7 @@ class _TicketsViewState extends State<TicketsView>
           ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(ticket.eventImage??"https://www.designboom.com/wp-content/uploads/2019/10/carlo-ratti-italian-pavilion-expo-2020-dubai-designboom-02.jpg"), fit: BoxFit.cover,
+              image: NetworkImage(eventsModal.image??"https://www.designboom.com/wp-content/uploads/2019/10/carlo-ratti-italian-pavilion-expo-2020-dubai-designboom-02.jpg"), fit: BoxFit.cover,
             ),
               borderRadius: BorderRadius.only(topLeft: Radius.circular(40),topRight: Radius.circular(40))
           ),
@@ -134,7 +136,7 @@ class _TicketsViewState extends State<TicketsView>
                 },
                 child: Row(
                   children: [
-                    Text(ticket.eventName??"Italia retail expo 2023",style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
+                    Text(eventsModal.name??"Italia retail expo 2023",style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
                     SizedBox(width: 4,),
                     Icon(Icons.launch,size:18,color: Colors.white,)
                   ],
@@ -149,15 +151,23 @@ class _TicketsViewState extends State<TicketsView>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(ticket.ticketHolderName??"Ashraf",style: TextStyle(color: Color(0xff394512),fontSize: 25,fontWeight: FontWeight.bold),),
-              Text(ticket.email??"ashrafk.salim1@gmail.com",style: TextStyle(color: Color(0xff394512),fontSize: 16,),),
+              Text(participantsModal.name??"Ashraf",style: TextStyle(color: Color(0xff394512),fontSize: 25,fontWeight: FontWeight.bold),),
+              Text(participantsModal.email??"ashrafk.salim1@gmail.com",style: TextStyle(color: Color(0xff394512),fontSize: 16,),),
               Container(height: 10,),
-              Text("#"+(ticket.reference??"#09192-191-290-120"),style: TextStyle(color: Color(0xff394512),fontSize: 23,fontWeight: FontWeight.bold),),
-              Text(ticket.details??"This is a Ticket Description",style: TextStyle(color: Colors.black),),
+              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),style: TextStyle(color: Color(0xff394512),fontSize: 23,fontWeight: FontWeight.bold),),
+              Text("This is a Ticket Description",style: TextStyle(color: Colors.black),),
             ],
           ),
         ),
-        Container(
+
+        QrImageView(
+          data: ticket.referenceNumber,
+          backgroundColor: Colors.white,
+          version: QrVersions.auto,
+          size: size.width*0.5,
+        ),
+
+        /*Container(
           height:size.width*0.5,
           width: size.width*0.5,
           margin: EdgeInsets.only(top: size.height*0.47,left: size.width*0.29),
@@ -166,7 +176,7 @@ class _TicketsViewState extends State<TicketsView>
                 image: NetworkImage(ticket.qrCode??"https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/QR-code-obituary.svg/220px-QR-code-obituary.svg.png"), fit: BoxFit.cover,
               ),
           ),
-        ),
+        ),*/
         Positioned(
           bottom: size.height*0.355,
           child: Container(

@@ -1,63 +1,47 @@
 // To parse this JSON data, do
 //
-//     final ticketModal = ticketModalFromJson(jsonString);
-
-import 'dart:convert';
+//     final ticketsModa = ticketsModaFromJson(jsonString);
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:meta/meta.dart';
+import 'dart:convert';
 
-TicketModal ticketModalFromJson(String str) => TicketModal.fromJson(json.decode(str));
+TicketsModal ticketsModalFromJson(String str) => TicketsModal.fromJson(json.decode(str));
 
-String ticketModalToJson(TicketModal data) => json.encode(data.toJson());
+String ticketsModalToJson(TicketsModal data) => json.encode(data.toJson());
 
-class TicketModal {
-  String? email;
-  String? mobile;
-  String? qrCode;
-  String? reference;
-  DocumentReference? ticketForEvent;
-  String? details;
-  String? eventImage;
-  String? ticketType;
-  String? eventName;
-  String? ticketHolderName;
+class TicketsModal {
+  DocumentReference eventDetails;
+  DocumentReference participantsDetails;
+  String referenceNumber;
+  String ticketType;
+  Timestamp creationTime;
+  Timestamp modificationTime;
 
-  TicketModal({
-    this.email,
-    this.mobile,
-    this.qrCode,
-    this.reference,
-    this.ticketForEvent,
-    this.details,
-    this.eventImage,
-    this.ticketType,
-    this.eventName,
-    this.ticketHolderName,
+  TicketsModal({
+    required this.eventDetails,
+    required this.participantsDetails,
+    required this.referenceNumber,
+    required this.ticketType,
+    required this.creationTime,
+    required this.modificationTime,
   });
 
-  factory TicketModal.fromJson(Map<String, dynamic> json) => TicketModal(
-    email: json["Email"],
-    mobile: json["Mobile"],
-    qrCode: json["QrCode"],
-    reference: json["Reference"],
-    ticketForEvent: json["TicketForEvent"],
-    details: json["Details"],
-    eventImage: json["EventImage"],
+  factory TicketsModal.fromJson(Map<String, dynamic> json) => TicketsModal(
+    eventDetails: json["EventDetails"],
+    participantsDetails: json["ParticipantsDetails"],
+    referenceNumber: json["ReferenceNumber"],
     ticketType: json["TicketType"],
-    eventName: json["EventName"],
-    ticketHolderName: json["TicketHolderName"],
+    creationTime: json["CreationTime"],
+    modificationTime: json["ModificationTime"],
   );
 
   Map<String, dynamic> toJson() => {
-    "Email": email,
-    "Mobile": mobile,
-    "QrCode": qrCode,
-    "Reference": reference,
-    "TicketForEvent": ticketForEvent,
-    "Details": details,
-    "EventImage": eventImage,
+    "EventDetails": eventDetails,
+    "ParticipantsDetails": participantsDetails,
+    "ReferenceNumber": referenceNumber,
     "TicketType": ticketType,
-    "EventName": eventName,
-    "TicketHolderName": ticketHolderName,
+    "CreationTime": creationTime,
+    "ModificationTime": modificationTime,
   };
 }
