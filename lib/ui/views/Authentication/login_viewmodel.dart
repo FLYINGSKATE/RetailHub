@@ -213,6 +213,8 @@ class LoginViewModel extends BaseViewModel {
     // prefs.setString(UserDetails.password.toString(), "");
     // email = "rjha1@gmail.comm";
     print("APAN LOGF");
+    print(email.toString());
+    print(password.text);
     await showProgressBar(true);
 
     var headers = {
@@ -220,8 +222,8 @@ class LoginViewModel extends BaseViewModel {
     };
     var request = http.Request('POST', Uri.parse('https://dev1.retailhub.ai/api/login'));
     request.body = json.encode({
-      "email": email,
-      "password": ''
+      "email": email.toString(),
+      "password": password.text
     });
     request.headers.addAll(headers);
 
@@ -302,13 +304,12 @@ class LoginViewModel extends BaseViewModel {
       prefs.setString(UserDetails.email.toString(), userData.email);
       prefs.setString(UserDetails.token.toString(), userData.email);
       log("linkedin user registerd");
-      await linkedinLogin(context, fn, ln, email);
+      await linkedinLogin(context, fn.toString(), ln.toString(), email.toString());
     }
     else {
       print(response.reasonPhrase);
+      print("Unable To Register");
       print("message");
-
-
 
       /*BaseCommonMethods.showSnackbar(
         context: context,

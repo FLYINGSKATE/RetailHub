@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:retailhub/model/article_model.dart';
+import 'package:retailhub/model/startup_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
@@ -11,7 +12,7 @@ import '../../../constants/route_names.dart';
 import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
 import 'package:share_plus/share_plus.dart';
-
+import 'package:retailhub/model/startup_model.dart';
 import '../../enums/enums.dart';
 
 class SearchViewModel extends BaseViewModel {
@@ -22,25 +23,30 @@ class SearchViewModel extends BaseViewModel {
   TextEditingController searchController = TextEditingController();
   final List<String> items = List<String>.generate(20, (i) => "Item $i");
   var duplicateItems = <String>[];
+
   initModel(BuildContext context) async {
+    print("Init Model For Search");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    token = prefs.getString(UserDetails.token.toString())!;
-    await getAll();
+    token = prefs.getString(UserDetails.token.toString())??"";
+    print("Init Model For Search");
+    await getAllArticles();
+    await getAllStartups();
     notifyListeners();
   }
 
   get isLoading => _isLoading;
 
-  List<Datum> searchitems = [];
+  List<Datum> searchedArticles = [];
+  List<Startups> searchedStartUps = [];
 
   showProgressBar(value) async {
     _isLoading = value;
     notifyListeners();
   }
 
-  getAll() async {
+  getAllArticles() async {
     showProgressBar(true);
-    print("Getting All Articles");
+    print("Getting All Articles For Search");
     ApiServices.getRequest(
         url: API.articles,
         onSuccess: (data) async {
@@ -48,8 +54,8 @@ class SearchViewModel extends BaseViewModel {
           log("data");
           log(data);
           final ArticleModel searchData = articleModelFromJson(data.toString());
-          searchitems = searchData.data;
-          log(' Length: ${searchitems.length}');
+          searchedArticles = searchData.data;
+          log(' Length: ${searchedArticles.length}');
           notifyListeners();
         },
         onError: (String message, bool isError) async {
@@ -60,7 +66,8 @@ class SearchViewModel extends BaseViewModel {
   }
 
   searchArticles() async {
-    searchitems.clear();
+    searchedArticles.clear();
+    print("Searching Articles : for"+searchController.text);
     notifyListeners();
     showProgressBar(true);
     ApiServices.getRequest(
@@ -68,8 +75,8 @@ class SearchViewModel extends BaseViewModel {
         onSuccess: (data) async {
           showProgressBar(false);
           final ArticleModel searchData = articleModelFromJson(data.toString());
-          searchitems = searchData.data;
-          log(' Length: ${searchitems.length}');
+          searchedArticles = searchData.data;
+          log(' Length: ${searchedArticles.length}');
           notifyListeners();
         },
         onError: (String message, bool isError) async {
@@ -79,9 +86,64 @@ class SearchViewModel extends BaseViewModel {
         });
   }
 
+
+  getAllStartups() async {
+    showProgressBar(true);
+    print("Getting All Startups For Search");
+    ApiServices.getRequest(
+        url: "https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5",
+        onSuccess: (data) async {
+          showProgressBar(false);
+          log("data");
+          log(data);
+          final StartupModal searchData = startupModelFromJson(data.toString());
+          searchedStartUps = searchData.data?.startups??[];
+          log(' Length Searched StartUps: ${searchedStartUps.length}');
+          notifyListeners();
+        },
+        onError: (String message, bool isError) async {
+          showProgressBar(false);
+          notifyListeners();
+          log("ERROR$message");
+        });
+  }
+
+  searchStartups() async {
+    searchedArticles.clear();
+    print("Searching StartUps : for"+searchController.text);
+    notifyListeners();
+    showProgressBar(true);
+    ApiServices.getRequest(
+       // https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5&search=Information Security"
+        url: 'https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5&search=${searchController.text}',
+        onSuccess: (data) async {
+          showProgressBar(false);
+          log("data");
+          log(data);
+          final StartupModal searchData = startupModelFromJson(data.toString());
+          searchedStartUps = searchData.data?.startups??[];
+          log(' Length Searched StartUps: ${searchedStartUps.length}');
+          notifyListeners();
+        },
+        onError: (String message, bool isError) async {
+          showProgressBar(false);
+          notifyListeners();
+          log("ERROR$message");
+        });
+  }
+
+
   void navigateToDetails(Datum? blogs) {
     log("blogs!.newsTitle!");
     log(blogs!.id);
     _navigationService.navigateTo(blogdetailsViewRoute, arguments: blogs);
   }
+
+  void navigateToStartupDetails(Startups startups) {
+    log("startups!.companyLegalName!");
+    log(startups.companyLegalName.toString());
+    _navigationService.navigateTo(startupsdetailsViewRoute, arguments: startups);
+  }
+
+  
 }

@@ -356,14 +356,19 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                                 .identifier!);
 
                                         // ignore: use_build_context_synchronously
+                                        print(linkedInUser.user.firstName!.localized!.label!.toString());
+                                        print(linkedInUser.user.lastName!.localized!.label!.toString());
+                                        print(linkedInUser.user.email!.elements![0].handleDeep!.emailAddress!.toString());
+
+                                        print("Ashraffafafsafshagsf");
                                         await viewModel.linkedinsignup(
-                                            linkedInUser.user.firstName!.localized!.label!,
-                                            linkedInUser.user.lastName!.localized!.label!,linkedInUser
+                                            linkedInUser.user.firstName!.localized!.label!.toString(),
+                                            linkedInUser.user.lastName!.localized!.label!.toString(),linkedInUser
                                             .user
                                             .email!
                                             .elements![0]
                                             .handleDeep!
-                                            .emailAddress!,context
+                                            .emailAddress!.toString(),context
                                             );
                                       },
                                     ),

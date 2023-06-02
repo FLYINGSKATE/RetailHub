@@ -4,6 +4,7 @@ const String loginViewRoute = "loginViewRoute";
 const String signupViewRoute = "signupViewRoute";
 const String dashboardViewRoute = "dashboardViewRoute";
 const String blogdetailsViewRoute = "blogdetailsViewRoute";
+const String startupsdetailsViewRoute = "startupsdetailsViewRoute";
 const String blogsviewRoute = "blogsviewRoute";
 const String privacyviewRoute = "privacyviewRoute";
 const String profileViewRoute = "profileViewRoute";

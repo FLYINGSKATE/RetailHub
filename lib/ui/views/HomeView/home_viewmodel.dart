@@ -53,6 +53,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> getEventsArticles() async {
+    print("Shpo");
     showProgressBar(true);
     await ApiServices.getRequest(
       url: "${API.articlesbyTag}Events",

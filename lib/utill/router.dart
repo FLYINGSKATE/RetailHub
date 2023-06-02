@@ -15,6 +15,7 @@ import '../ui/views/Authentication/login_view.dart';
 import '../ui/views/Authentication/signup_view.dart';
 import '../ui/views/Dashboard/dashboard_view.dart';
 import '../ui/views/StartUp/startup_view.dart';
+import '../ui/widgets/startups_details.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -85,10 +86,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: const TrainingView(),
       );
-      case blogdetailsViewRoute:
+    case blogdetailsViewRoute:
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow:  ArticleDetailsPage(article: settings.arguments),
+      );
+    case startupsdetailsViewRoute:
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow:  StartUpsDetailsPage(startup: settings.arguments),
       );
     default:
       return MaterialPageRoute(

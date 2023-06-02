@@ -142,35 +142,38 @@ class _TicketsViewState extends State<TicketsView>
                 },
                 child: Row(
                   children: [
-                    Text(eventsModal.name??"Italia retail expo 2023",style: TextStyle(color: Colors.white,fontSize: 25,fontWeight: FontWeight.bold),),
+                    Text(eventsModal.name??"Italia retail expo 2023",style: TextStyle(color: Colors.white,fontSize: size.height*0.03,fontWeight: FontWeight.bold),),
                     SizedBox(width: 4,),
                     Icon(Icons.launch,size:18,color: Colors.white,)
                   ],
                 ),
               ),
-              Text("The largest retail show in Europe.Will be held in Milan.",style: TextStyle(color: Colors.white),),
+              Text("The largest retail show in Europe.Will be held in Milan.",style: TextStyle(color: Colors.white,fontSize: size.height*0.017,),),
             ],
           ),
         ),
         Positioned(
-          top:size.height*0.335,left: size.width*0.28,
+          top:size.height*0.335,left: size.width*0.23,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(participantsModal.name??"Ashraf",style: TextStyle(color: Color(0xff394512),fontSize: 25,fontWeight: FontWeight.bold),),
-              Text(participantsModal.email??"ashrafk.salim1@gmail.com",style: TextStyle(color: Color(0xff394512),fontSize: 16,),),
-              Container(height: 10,),
-              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),style: TextStyle(color: Color(0xff394512),fontSize: 23,fontWeight: FontWeight.bold),),
-              Text("This is a Ticket Description",style: TextStyle(color: Colors.black),),
+              Text(participantsModal.name??"Ashraf",style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.03,fontWeight: FontWeight.bold),),
+              Text(participantsModal.email??"ashrafk.salim1@gmail.com",style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.02,),),
+              Container(height:  size.height*0.008,),
+              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.026,fontWeight: FontWeight.bold),),
+              Text("This is a Ticket Description",style: TextStyle(color: Colors.black,fontSize: size.height*0.018,),),
             ],
           ),
         ),
 
-        QrImageView(
-          data: ticket.referenceNumber,
-          backgroundColor: Colors.white,
-          version: QrVersions.auto,
-          size: size.width*0.5,
+        Positioned(
+          top:size.height*0.475,left: size.width*0.287,
+          child: QrImageView(
+            data: ticket.referenceNumber,
+            backgroundColor: Colors.white,
+            version: QrVersions.auto,
+            size: size.height*0.25,
+          ),
         ),
 
         /*Container(
