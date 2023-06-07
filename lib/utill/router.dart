@@ -6,6 +6,7 @@ import 'package:retailhub/ui/views/Events/events_view.dart';
 import 'package:retailhub/ui/views/Innovation/innovation_view.dart';
 import 'package:retailhub/ui/views/Innovation/innovation_viewweb.dart';
 import 'package:retailhub/ui/views/Profile/profile_view.dart';
+import 'package:retailhub/ui/views/Tickets/single_ticket_view.dart';
 import 'package:retailhub/ui/views/Training/training_view.dart';
 import 'package:retailhub/ui/widgets/article_details.dart';
 
@@ -85,6 +86,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: const TrainingView(),
+      );
+    case singleTicketViewRoute:
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: SingleTicketsView(ticketDetails:settings.arguments),
       );
     case blogdetailsViewRoute:
       return _getPageRoute(

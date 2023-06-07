@@ -120,6 +120,7 @@ class SearchViewModel extends BaseViewModel {
           showProgressBar(false);
           log("data");
           log(data);
+          //log(data["startups"]);
           final StartupModal searchData = startupModelFromJson(data.toString());
           searchedStartUps = searchData.data?.startups??[];
           log(' Length Searched StartUps: ${searchedStartUps.length}');

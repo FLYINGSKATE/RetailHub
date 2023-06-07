@@ -76,7 +76,22 @@ class _SearchViewState extends State<SearchView>
                 style: const TextStyle(color: white),
                 textInputAction: TextInputAction.search,
                 onChanged: (ss) {
-                  viewModel?.searchArticles();
+                  if(viewModel?.searchController.text.trim()==""){
+                    if(selectedTabIndex==0){
+                      viewModel?.getAllStartups();
+                    }
+                    else{
+                      viewModel?.getAllArticles();
+                    }
+                  }
+                  else{
+                    if(selectedTabIndex==0){
+                      viewModel?.searchStartups();
+                    }
+                    else{
+                      viewModel?.searchArticles();
+                    }
+                  }
                 },
                 onEditingComplete: (() {
                   if(viewModel?.searchController.text.trim()==""){
@@ -161,7 +176,7 @@ class _SearchViewState extends State<SearchView>
   alignment: Alignment.topCenter,
   child: Container(
     margin: const EdgeInsets.only(left: 10, right: 10),
-    child: viewModel.searchedArticles.isNotEmpty
+    child: (selectedTabIndex==1?viewModel.searchedArticles.isNotEmpty:viewModel.searchedStartUps.isNotEmpty)
       ? TabBarView(
       controller: tabBarController,
       children: [
@@ -219,7 +234,7 @@ class _SearchViewState extends State<SearchView>
 
       ],
     )
-      : const NoDataWidget(message: 'No articles found'),
+      :  NoDataWidget(message: selectedTabIndex==1?'No articles found':'No Startups Found'),
   ),
 );
 

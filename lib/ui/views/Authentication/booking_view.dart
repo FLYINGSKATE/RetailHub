@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/linkedin_login.dart';
+import 'package:retailhub/app/app.locator.dart';
+import 'package:retailhub/services/navigation_service.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/custom_strings.dart';
+import '../../../constants/route_names.dart';
 import '../../../constants/string.dart';
 import '../../../utill/app_text_style.dart';
 import '../../methods/basecommon_methods.dart';
@@ -24,7 +27,7 @@ class BookingView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         body: Stack(
           children: [
-            const BodyWidget(),
+            BodyWidget(),
             model.isSigningIn
                 ? Container(
                     color: Colors.black38,
@@ -47,7 +50,9 @@ final _formkey = GlobalKey<FormState>();
 UserObject? user;
 
 class BodyWidget extends ViewModelWidget<LoginViewModel> {
-  const BodyWidget({
+  final NavigationService _navigationService = locator<NavigationService>();
+
+   BodyWidget({
     Key? key,
   }) : super(key: key, reactive: true);
 
@@ -188,7 +193,12 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             ),
                             1.h.heightBox,
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                print("Hola");
+                                _navigationService.popAllAndNavigateTo(singleTicketViewRoute,arguments: {
+                                  viewModel.bookingemailController.text:viewModel.ticketrefrenceController.text
+                                });
+                              },
                               style: ElevatedButton.styleFrom(
                                 primary: viewModel.bookingagreecheck!
                                     ? primaryColor
@@ -211,6 +221,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             ),
                             TextButton(
                               onPressed: () {
+
                                 // Get.toNamed(RoutesName.emailScreen);
                               },
                               child: Text(

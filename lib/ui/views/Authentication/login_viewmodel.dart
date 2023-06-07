@@ -140,13 +140,10 @@ class LoginViewModel extends BaseViewModel {
 
             var userData = user.user;
             prefs.setBool(UserDetails.islogin.toString(), true);
-
             prefs.setString(UserDetails.imgurl.toString(), "null");
-            prefs.setString(
-                UserDetails.firstname.toString(), userData.firstName);
+            prefs.setString(UserDetails.firstname.toString(), userData.firstName);
             prefs.setString(UserDetails.lastname.toString(), userData.lastName);
-            prefs.setString(UserDetails.fullname.toString(),
-                userData.firstName + userData.lastName);
+            prefs.setString(UserDetails.fullname.toString(), userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
             BaseCommonMethods.showSnackbar(
               context: context,

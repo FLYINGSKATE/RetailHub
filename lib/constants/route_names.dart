@@ -13,6 +13,7 @@ const String innovationViewRoute = "innovationViewRoute";
 const String innovationWebViewRoute = "innovationWebViewRoute";
 const String coworkingViewRoute = "coworkingViewRoute";
 const String trainingViewRoute = "trainingViewRoute";
+const String singleTicketViewRoute = "singleTicketViewRoute";
 
 
 
