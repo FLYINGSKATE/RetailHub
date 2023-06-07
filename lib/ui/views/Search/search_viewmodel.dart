@@ -7,7 +7,8 @@ import 'package:retailhub/model/startup_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import '../../../app/app.locator.dart';
-import '../../../constants/API.dart';
+
+import '../../../constants/api.dart';
 import '../../../constants/route_names.dart';
 import '../../../services/api_service.dart';
 import '../../../services/navigation_service.dart';
@@ -91,7 +92,8 @@ class SearchViewModel extends BaseViewModel {
     showProgressBar(true);
     print("Getting All Startups For Search");
     ApiServices.getRequest(
-        url: "https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5",
+        ///url: "https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5",
+        url: API.startups,
         onSuccess: (data) async {
           showProgressBar(false);
           log("data");
@@ -115,7 +117,8 @@ class SearchViewModel extends BaseViewModel {
     showProgressBar(true);
     ApiServices.getRequest(
        // https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5&search=Information Security"
-        url: 'https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5&search=${searchController.text}',
+       // url: 'https://dev1.retailhub.ai/api/v2/startup/search?pageNum=1&size=5&search=${searchController.text}',
+        url: API.searchstartups+searchController.text,
         onSuccess: (data) async {
           showProgressBar(false);
           log("data");

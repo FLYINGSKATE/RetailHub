@@ -141,32 +141,32 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
                 },
                 child: Row(
                   children: [
-                    Text(eventsModal.name??"Italia retail expo 2023",style: TextStyle(color: Colors.white,fontSize: size.height*0.03,fontWeight: FontWeight.bold),),
+                    Text(eventsModal.name??"Italia retail expo 2023",textScaleFactor: 1.9,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                     SizedBox(width: 4,),
                     Icon(Icons.launch,size:18,color: Colors.white,)
                   ],
                 ),
               ),
-              Text("The largest retail show in Europe.Will be held in Milan.",style: TextStyle(color: Colors.white,fontSize: size.height*0.017,),),
+              Text("The largest retail show in Europe.Will be held in Milan.",textScaleFactor: 1.0,style: TextStyle(color: Colors.white,),),
             ],
           ),
         ),
         Positioned(
-          top:size.height*0.335,left: size.width*0.23,
+          top:size.height*0.35,left: size.width*0.28,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(participantsModal.name??"Ashraf",style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.03,fontWeight: FontWeight.bold),),
-              Text(participantsModal.email??"ashrafk.salim1@gmail.com",style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.02,),),
-              Container(height:  size.height*0.008,),
-              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),style: TextStyle(color: Color(0xff394512),fontSize: size.height*0.026,fontWeight: FontWeight.bold),),
-              Text("This is a Ticket Description",style: TextStyle(color: Colors.black,fontSize: size.height*0.018,),),
+              Text(participantsModal.name??"Ashraf",textScaleFactor: 1.8,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text(participantsModal.email??"ashrafk.salim1@gmail.com",textScaleFactor: 1.2,style: TextStyle(color: Color(0xff394512)),),
+              Container(height:size.height*0.01,),
+              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),textScaleFactor: 1.5,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text("This is a Ticket Description",textScaleFactor: 1.2,style: TextStyle(color: Colors.black,),),
             ],
           ),
         ),
 
         Positioned(
-          top:size.height*0.475,left: size.width*0.287,
+          top:size.height*0.55,left: size.width*0.29,
           child: QrImageView(
             data: ticket.referenceNumber,
             backgroundColor: Colors.white,
