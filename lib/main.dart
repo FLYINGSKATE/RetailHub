@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:retailhub/ui/views/Authentication/login_view.dart';
 import 'package:retailhub/ui/views/Authentication/signup_view.dart';
 import 'package:retailhub/ui/views/Search/search_view.dart';
+import 'package:retailhub/ui/views/Tickets/single_ticket_view.dart';
 import 'package:sizer/sizer.dart';
 
 import 'app/app.locator.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light(),
         navigatorKey: locator<NavigationService>().navigationKey,
         initialRoute: startupViewRoute,
-        //home: SignUpView(),
+        //home: SingleTicketsView(ticketDetails: {"diana.doe@example.com":"9fMgUUb18ov8OHzZ9X4J"},),
         onGenerateRoute: generateRoute,
       );
     });

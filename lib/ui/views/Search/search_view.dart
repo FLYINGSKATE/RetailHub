@@ -190,7 +190,7 @@ class _SearchViewState extends State<SearchView>
             print("startups.logo");
           //  print(startups.logo.toString());
            // print(startups.toJson());
-            print(startups.id);
+            /*print(startups.id);
             print(startups.companyShortName);
             print(startups.logoId);
             print(startups.logo30Id);
@@ -201,7 +201,7 @@ class _SearchViewState extends State<SearchView>
             print(startups.logo120Id);
 
             print(startups.companyDescription);
-            print(startups.linkedInCompanyPage);
+            print(startups.linkedInCompanyPage);*/
             return NewsItem(
               startups.id,
               startups.companyShortName??"No Name",
@@ -219,6 +219,7 @@ class _SearchViewState extends State<SearchView>
           itemCount: viewModel.searchedArticles.length,
           itemBuilder: (context, index) {
             Datum? blogs = viewModel.searchedArticles[index];
+            blogs.imageName = blogs.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
             return NewsItem(
               myCallback: () {
                 viewModel.navigateToDetails(blogs);

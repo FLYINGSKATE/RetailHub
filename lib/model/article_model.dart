@@ -77,17 +77,17 @@ class Datum {
         isdeleted: json["isdeleted"],
         articlesLink: json["articles_link"],
         title: json["title"],
-        fileId: json["file_id"],
+        fileId: json["file_id"]??"",
         startUpId: json["start_up_id"],
-        imagedata: json["imagedata"],
+        imagedata: json["imagedata"]??"",
         imageName: json["image_name"],
-        imageType: json["image_type"],
+        imageType: json["image_type"]??"",
         areaInterest: json["area_interest"],
         restricted: json["restricted"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         startup: Startup.fromJson(json["startup"]),
-        tags: json["tags"],
+        tags: json["tags"]??[],
     );
 
     Map<String, dynamic> toJson() => {
@@ -199,18 +199,18 @@ class PurpleAreaInterest {
 class Startup {
     Startup({
         required this.id,
-        required this.brandName,
-        required this.companyLegalName,
+        this.brandName,
+        this.companyLegalName,
     });
 
     String id;
     String? brandName;
-    String companyLegalName;
+    String? companyLegalName;
 
     factory Startup.fromJson(Map<String, dynamic> json) => Startup(
         id: json["id"],
-        brandName: json["brand_name"],
-        companyLegalName: json["company_legal_name"],
+        brandName: json["brand_name"]??"",
+        companyLegalName: json["company_legal_name"]??"",
     );
 
     Map<String, dynamic> toJson() => {

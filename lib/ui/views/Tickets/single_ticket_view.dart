@@ -89,7 +89,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
       children: [
 
         Container(
-          height:size.height,
+          height:size.height*0.9,
           width: size.width*0.9,
           margin: EdgeInsets.all(40),
           decoration: BoxDecoration(
@@ -100,7 +100,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
 
 
         Container(
-          height:size.height*0.28,
+          height:size.height*0.35,
           width: size.width*0.9,
           margin: EdgeInsets.all(40),
           foregroundDecoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
           ),
         ),
         Positioned(
-          top:size.height*0.23,left: 50,
+          top:size.height*0.29,left: 50,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -152,7 +152,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
           ),
         ),
         Positioned(
-          top:size.height*0.35,left: size.width*0.28,
+          top:size.height*0.42,left: size.width*0.25,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -166,7 +166,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
         ),
 
         Positioned(
-          top:size.height*0.55,left: size.width*0.29,
+          top:size.height*0.62,left: size.width*0.262,
           child: QrImageView(
             data: ticket.referenceNumber,
             backgroundColor: Colors.white,

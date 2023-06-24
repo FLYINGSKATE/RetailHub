@@ -80,6 +80,7 @@ class TrainingViewState extends State<TrainingView>
                     itemCount: viewModel.articles.length,
                     itemBuilder: (context, index) {
                       TagsArticleModel? article = viewModel.articles[index];
+                      article.imageName = article.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
                       return NewsItem(myCallback: () {
                         viewModel.navigateToDetails(article);
                       },
