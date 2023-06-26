@@ -29,15 +29,21 @@ class ProfileViewModel extends BaseViewModel {
   bool isLinkedinlogin = false;
   initModel(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    token = prefs.getString(UserDetails.token.toString())!;
+    print("Hola ");
+    token = prefs.getString(UserDetails.token.toString())??"";
+    print(token);
     firstName = prefs.getString(UserDetails.firstname.toString())!;
+    print(firstName);
     if(prefs.containsKey(UserDetails.position.toString())){
       position = prefs.getString(UserDetails.position.toString())!;
     }
     lastName = prefs.getString(UserDetails.lastname.toString())!;
+    print(lastName);
     fullName = prefs.getString(UserDetails.fullname.toString())!;
+    print(fullName);
     email = prefs.getString(UserDetails.email.toString())!;
-    phoneController.text = prefs.getString(UserDetails.phoneNumber.toString())!;
+    print(email);
+    phoneController.text = prefs.getString(UserDetails.phoneNumber.toString())??"";
     firstnameController.text = firstName;
     lastnameController.text = lastName;
     emailController.text = email;

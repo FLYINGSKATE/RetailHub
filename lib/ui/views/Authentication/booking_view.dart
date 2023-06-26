@@ -92,6 +92,9 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFormField(
+                              onChanged: (s){
+                                viewModel.notifyListeners();
+                              },
                               controller: viewModel.bookingemailController,
                               cursorColor: primaryColor,
                               autocorrect: true,
@@ -124,6 +127,9 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             ),
                             3.h.heightBox,
                             TextFormField(
+                              onChanged: (s){
+                                viewModel.notifyListeners();
+                              },
                               obscureText: viewModel.isHidden,
                               controller: viewModel.ticketrefrenceController,
                               cursorColor: primaryColor,
@@ -200,7 +206,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: viewModel.bookingagreecheck!
+                                primary: (viewModel.bookingagreecheck! && viewModel.bookingemailController.text.isNotEmpty && viewModel.ticketrefrenceController.text.isNotEmpty)!
                                     ? primaryColor
                                     : Colors.grey,
                                 onPrimary: const Color(0xff394512),
@@ -219,6 +225,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 ),
                               ),
                             ),
+                            2.h.heightBox,
                             TextButton(
                               onPressed: () {
 
@@ -229,6 +236,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 style: MyTextStyle.smalltext,
                               ),
                             ),
+                            2.h.heightBox,
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -389,7 +397,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                               },
                               clipBehavior: Clip.none,
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.h),
+                                padding: EdgeInsets.symmetric(vertical: 2.h,horizontal: 2.h),
                                 primary: whitetext,
                                 onPrimary: const Color(0xff394512),
                                 shape: RoundedRectangleBorder(
@@ -398,7 +406,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                               ),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Center(
                                     child: Image.asset(
@@ -432,7 +440,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: size.height*0.2,),
+                            15.h.heightBox,
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Text.rich(

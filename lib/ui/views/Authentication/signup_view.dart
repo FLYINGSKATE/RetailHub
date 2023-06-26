@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:retailhub/ui/views/Authentication/signup_viewmodel.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -25,7 +26,7 @@ class SignUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<LoginViewModel>.reactive(
+    return ViewModelBuilder<SignUpViewModel>.reactive(
       onViewModelReady: (model) => model.initMethod(context),
       builder: (context, model, child) => Scaffold(
         body: Stack(
@@ -43,20 +44,20 @@ class SignUpView extends StatelessWidget {
           ],
         ),
       ),
-      viewModelBuilder: () => LoginViewModel(),
+      viewModelBuilder: () => SignUpViewModel(),
     );
   }
 }
 
 bool? check = false;
 
-class BodyWidget extends ViewModelWidget<LoginViewModel> {
+class BodyWidget extends ViewModelWidget<SignUpViewModel> {
   const BodyWidget({
     Key? key,
   }) : super(key: key, reactive: true);
 
   @override
-  Widget build(BuildContext context, LoginViewModel viewModel) {
+  Widget build(BuildContext context, SignUpViewModel viewModel) {
     final formkey = GlobalKey<FormState>();
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -283,7 +284,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
     // }
   }
 
-  completeRegisteration(LoginViewModel viewModel, context, formkey) {
+  completeRegisteration(SignUpViewModel viewModel, context, formkey) {
     if (formkey.currentState!.validate()) {
       viewModel.steps[0] = true;
       viewModel.registerUser(context);

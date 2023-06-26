@@ -16,7 +16,7 @@ import '../../enums/enums.dart';
 import '../../methods/basecommon_methods.dart';
 import 'package:http/http.dart' as http;
 
-class LoginViewModel extends BaseViewModel {
+class SignUpViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   TextEditingController bookingemailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -64,25 +64,33 @@ class LoginViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> loginUser(BuildContext context) async {
+  Future<void> loginUser(BuildContext context, {String? emailId, String? password}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString(UserDetails.email.toString(),
     //     isChecked ? emailController.text.toString().trim() : "");
     // prefs.setString(UserDetails.password.toString(),
     //     isChecked ? passwordController.text.toString() : "");
+
     await showProgressBar(true);
+    if(emailId==null){
+      emailId = emailController.text.trim();
+    }
+    if(password==null){
+      password = passwordController.text;
+    }
+
     try {
       ApiServices.postRequest(
           url: API.login,
           params: {
-            "email": emailController.text.trim(),
-            "password": passwordController.text,
+            "email": emailId,
+            "password": password,
           },
           onSuccess: (Map data) async {
             await showProgressBar(false);
             log('login data: ${data}');
             final UserModel user =
-                userModelFromJson(json.encode(data).toString());
+            userModelFromJson(json.encode(data).toString());
             log(user.data.user.firstName);
             var userData = user.data.user;
             prefs.setBool(UserDetails.islogin.toString(), true);
@@ -134,22 +142,30 @@ class LoginViewModel extends BaseViewModel {
           },
           onSuccess: (Map data) async {
             await showProgressBar(false);
-            log('registewr data: ${data}');
-            final RegisterUserModel user =
-                registerUserModelFromJson(json.encode(data).toString());
+            log('register data: ${data}');
+            data.forEach((key, value) {
+              print(key);
+              print(value);
+              print("Ashraf Khan");
+            });
+            final RegisterUserModel user = registerUserModelFromJson(json.encode(data).toString());
 
             var userData = user.user;
+
             prefs.setBool(UserDetails.islogin.toString(), true);
             prefs.setString(UserDetails.imgurl.toString(), "null");
             prefs.setString(UserDetails.firstname.toString(), userData.firstName);
             prefs.setString(UserDetails.lastname.toString(), userData.lastName);
             prefs.setString(UserDetails.fullname.toString(), userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
-            //prefs.setString(UserDetails.phoneNumber.toString(),userData.phoneNumber);
+            prefs.setString(UserDetails.phoneNumber.toString(),phone.text);
+           // prefs.setString(UserDetails.token.toString(),userData.token);
+
             BaseCommonMethods.showSnackbar(
               context: context,
               msg: "Registration successful",
             );
+            await loginUser(context,emailId: busienssemail.text,password: password.text);
             _navigationService.popAllAndNavigateTo(dashboardViewRoute);
           },
           onError: (String message, bool isError) async {
