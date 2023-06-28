@@ -99,7 +99,7 @@ class LoginViewModel extends BaseViewModel {
               context: context,
               msg: "Login successful",
             );
-            _navigationService.popAllAndNavigateTo(dashboardViewRoute);
+            _navigationService.navigateAndReplace(dashboardViewRoute);
           },
           onError: (String message, bool isError) async {
             BaseCommonMethods.showSnackbar(
@@ -198,6 +198,37 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
+  Future<void> forgetticketReference(BuildContext context) async {
+    await showProgressBar(true);
+
+    try {
+      ApiServices.postRequest(
+          url: "${API.forgetpassword}/${emailController.text}",
+          params: {
+            "email": emailController.text,
+          },
+          onSuccess: (var data) async {
+            await showProgressBar(false);
+            BaseCommonMethods.appToast(
+                msg: "Please check your email for all ticket references you have.",
+                time: 2000);
+          },
+          onError: (String message, bool isError) async {
+            BaseCommonMethods.appToast(
+                msg: "We couldn't find an account with that email address.",
+                time: 2000);
+
+            await showProgressBar(false);
+          });
+    } catch (e) {
+      BaseCommonMethods.appToast(
+          msg: "We couldn't find an account with that email address.",
+          time: 2000);
+
+      await showProgressBar(false);
+    }
+  }
+
   void opensignupPage() {
     _navigationService.navigateTo(signupViewRoute);
   }
@@ -249,7 +280,9 @@ class LoginViewModel extends BaseViewModel {
       prefs.setString(UserDetails.phoneNumber.toString(), userData.phoneNumber);
       prefs.setString(UserDetails.token.toString(), user.data.token);
       await showProgressBar(false);
-      _navigationService.popAllAndNavigateTo(dashboardViewRoute);
+      print("AsasaasasassssssssssssssssssssssssssIOIOI");
+      _navigationService.pop();
+      _navigationService.navigateTo(dashboardViewRoute);
     }
     else {
       print(response.reasonPhrase);

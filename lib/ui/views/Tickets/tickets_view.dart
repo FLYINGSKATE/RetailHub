@@ -27,8 +27,6 @@ class TicketsView extends StatefulWidget {
 class _TicketsViewState extends State<TicketsView>
     with SingleTickerProviderStateMixin {
 
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -123,7 +121,7 @@ class _TicketsViewState extends State<TicketsView>
           ),
         ),
         Positioned(
-          top:size.height*0.23,left: 50,
+          top:size.height*0.22,left: size.width*0.13,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -142,7 +140,7 @@ class _TicketsViewState extends State<TicketsView>
                 },
                 child: Row(
                   children: [
-                    Text(eventsModal.name??"Italia retail expo 2023",textScaleFactor: 1.9,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    Text(eventsModal.name??"Italia retail expo 2023",textScaleFactor: 1.6,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                     SizedBox(width: 4,),
                     Icon(Icons.launch,size:18,color: Colors.white,)
                   ],
@@ -153,26 +151,26 @@ class _TicketsViewState extends State<TicketsView>
           ),
         ),
         Positioned(
-          top:size.height*0.35,left: size.width*0.28,
+          top:size.height*0.34,left: size.width*0.32,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(participantsModal.name??"Ashraf",textScaleFactor: 1.8,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
-              Text(participantsModal.email??"ashrafk.salim1@gmail.com",textScaleFactor: 1.2,style: TextStyle(color: Color(0xff394512)),),
+              Text(participantsModal.name??"Ashraf",textScaleFactor: 1.5,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text(participantsModal.email??"ashrafk.salim1@gmail.com",textScaleFactor: 1.0,style: TextStyle(color: Color(0xff394512)),),
               Container(height:size.height*0.01,),
-              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),textScaleFactor: 1.5,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
-              Text("This is a Ticket Description",textScaleFactor: 1.2,style: TextStyle(color: Colors.black,),),
+              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),textScaleFactor: 1.0,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text("This is a Ticket Description",textScaleFactor: 1.0,style: TextStyle(color: Colors.black,),),
             ],
           ),
         ),
 
         Positioned(
-          top:size.height*0.55,left: size.width*0.29,
+          top:size.height*0.5,left: size.width*0.32,
           child: QrImageView(
             data: ticket.referenceNumber,
             backgroundColor: Colors.white,
             version: QrVersions.auto,
-            size: size.height*0.25,
+            size: size.height*0.2,
           ),
         ),
 

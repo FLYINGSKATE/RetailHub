@@ -73,7 +73,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
             child:NoDataWidget(message: 'No Tickets Found'),
 
           ),
-        )):TicketCard(viewModel.ticket!,viewModel.event!,viewModel.participant!);
+        )):Center(child: TicketCard(viewModel.ticket!,viewModel.event!,viewModel.participant!));
   }
 
 
@@ -89,8 +89,8 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
       children: [
 
         Container(
-          height:size.height*0.9,
-          width: size.width*0.9,
+          height:size.height*0.8,
+          width: size.width,
           margin: EdgeInsets.all(40),
           decoration: BoxDecoration(
               color: Colors.white,
@@ -100,7 +100,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
 
 
         Container(
-          height:size.height*0.35,
+          height:size.height*0.28,
           width: size.width*0.9,
           margin: EdgeInsets.all(40),
           foregroundDecoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
           ),
         ),
         Positioned(
-          top:size.height*0.29,left: 50,
+          top:size.height*0.21,left: size.width*0.13,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -136,42 +136,42 @@ class _SingleTicketsViewState extends State<SingleTicketsView>
                 child: Text(ticket.ticketType??"VIP Section",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
               ),
               InkWell(
-                onTap: (){
-
-                },
+                onTap: (){},
                 child: Row(
                   children: [
-                    Text(eventsModal.name??"Italia retail expo 2023",textScaleFactor: 1.9,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    Text(eventsModal.name??"Italia retail expo 2023",textScaleFactor: 1.6,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                     SizedBox(width: 4,),
                     Icon(Icons.launch,size:18,color: Colors.white,)
                   ],
                 ),
               ),
-              Text("The largest retail show in Europe.Will be held in Milan.",textScaleFactor: 1.0,style: TextStyle(color: Colors.white,),),
+              Container(
+                  width: size.width*0.73,
+                  child: Text("The largest retail show in Europe.Will be held in Milan.",textScaleFactor: 1.0,style: TextStyle(color: Colors.white,),)),
             ],
           ),
         ),
         Positioned(
-          top:size.height*0.42,left: size.width*0.25,
+          top:size.height*0.37,left: size.width*0.28,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(participantsModal.name??"Ashraf",textScaleFactor: 1.8,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
-              Text(participantsModal.email??"ashrafk.salim1@gmail.com",textScaleFactor: 1.2,style: TextStyle(color: Color(0xff394512)),),
+              Text(participantsModal.name??"Ashraf",textScaleFactor: 1.5,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text(participantsModal.email??"ashrafk.salim1@gmail.com",textScaleFactor: 1.0,style: TextStyle(color: Color(0xff394512)),),
               Container(height:size.height*0.01,),
-              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),textScaleFactor: 1.5,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
-              Text("This is a Ticket Description",textScaleFactor: 1.2,style: TextStyle(color: Colors.black,),),
+              Text("#"+(ticket.referenceNumber??"#09192-191-290-120"),textScaleFactor: 1.0,style: TextStyle(color: Color(0xff394512),fontWeight: FontWeight.bold),),
+              Text("This is a Ticket Description",textScaleFactor: 1.0,style: TextStyle(color: Colors.black,),),
             ],
           ),
         ),
 
         Positioned(
-          top:size.height*0.62,left: size.width*0.262,
+          top:size.height*0.6,left: size.width*0.3,
           child: QrImageView(
             data: ticket.referenceNumber,
             backgroundColor: Colors.white,
             version: QrVersions.auto,
-            size: size.height*0.25,
+            size: size.height*0.2,
           ),
         ),
 

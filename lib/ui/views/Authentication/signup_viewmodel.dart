@@ -100,14 +100,13 @@ class SignUpViewModel extends BaseViewModel {
             prefs.setString(UserDetails.fullname.toString(),
                 userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
-            prefs.setString(
-                UserDetails.phoneNumber.toString(), userData.phoneNumber);
+            prefs.setString(UserDetails.phoneNumber.toString(), userData.phoneNumber);
             prefs.setString(UserDetails.token.toString(), user.data.token);
             BaseCommonMethods.showSnackbar(
               context: context,
               msg: "Login successful",
             );
-            _navigationService.popAllAndNavigateTo(dashboardViewRoute);
+            _navigationService.navigateTo(dashboardViewRoute);
           },
           onError: (String message, bool isError) async {
             BaseCommonMethods.showSnackbar(
@@ -265,7 +264,8 @@ class SignUpViewModel extends BaseViewModel {
       prefs.setString(UserDetails.phoneNumber.toString(), userData.phoneNumber);
       prefs.setString(UserDetails.token.toString(), user.data.token);
       await showProgressBar(false);
-      _navigationService.popAllAndNavigateTo(dashboardViewRoute);
+      print("AsasaasasIOIOI");
+      _navigationService.navigateAndReplace(dashboardViewRoute);
     }
     else {
       print(response.reasonPhrase);

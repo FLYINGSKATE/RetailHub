@@ -23,6 +23,10 @@ class NavigationService {
         .popAndPushNamed(routeName, arguments: arguments);
   }
 
+  Future<dynamic> navigateAndReplace(String routeName, {dynamic arguments}) {
+    return _navigationKey.currentState!.pushReplacementNamed(routeName, arguments: arguments);
+  }
+
   Future<dynamic> popAllAndNavigateTo(String routeName, {dynamic arguments}) {
     return _navigationKey.currentState!.pushNamedAndRemoveUntil(
       routeName,

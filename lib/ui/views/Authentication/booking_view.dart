@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:retailhub/app/app.locator.dart';
 import 'package:retailhub/services/navigation_service.dart';
+import 'package:retailhub/ui/widgets/text_field.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stacked/stacked.dart';
 
@@ -52,9 +53,12 @@ UserObject? user;
 class BodyWidget extends ViewModelWidget<LoginViewModel> {
   final NavigationService _navigationService = locator<NavigationService>();
 
+
    BodyWidget({
     Key? key,
   }) : super(key: key, reactive: true);
+
+  final _forgetformKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) {
@@ -228,6 +232,14 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                             2.h.heightBox,
                             TextButton(
                               onPressed: () {
+                                print("Forget Ticket Reference");
+                                showDialog(
+                                  barrierColor: Colors.black26,
+                                  context: context,
+                                  builder: (context) {
+                                    return forgetPasswordDialog(viewModel,context);
+                                  },
+                                );
 
                                 // Get.toNamed(RoutesName.emailScreen);
                               },
@@ -270,6 +282,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 viewModel.opensigninPage();
                               },
                               style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.h),
                                 primary: primaryColor,
                                 onPrimary: const Color(0xff394512),
                                 shape: RoundedRectangleBorder(
@@ -389,6 +402,8 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                             .handleDeep!
                                             .emailAddress!.toString(),context
                                             );
+                                        _navigationService.navigateTo(dashboardViewRoute);
+
                                       },
                                     ),
                                     fullscreenDialog: true,
@@ -440,7 +455,7 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
                                 ),
                               ),
                             ),
-                            15.h.heightBox,
+                            4.h.heightBox,
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: Text.rich(
@@ -465,6 +480,77 @@ class BodyWidget extends ViewModelWidget<LoginViewModel> {
           ),
         );
       },
+    );
+  }
+
+  forgetPasswordDialog(LoginViewModel model, context) {
+    return AlertDialog(
+      backgroundColor: greycolor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      title: const Text(
+        'Forgot your ticket reference?',
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Form(
+        key: _forgetformKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomTextField(
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter email';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  FocusScope.of(context).unfocus();
+                },
+                hintText: CustomStrings.emailaddress,
+                label: '',
+                textEditingController: model.emailController),
+          ],
+        ),
+      ),
+      actions: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 4.5,
+          child: TextButton(
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 2.1,
+          child: ElevatedButton(
+            onPressed: () {
+              if (_forgetformKey.currentState!.validate()) {
+                Navigator.pop(context);
+                model.forgetticketReference(context);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              primary: primaryColor,
+              onPrimary: const Color(0xff394512),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+            ),
+            child: Center(
+              child: Text(
+                "Get Help",
+                style: MyTextStyle.button,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
