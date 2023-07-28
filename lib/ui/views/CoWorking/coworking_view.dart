@@ -78,7 +78,7 @@ class CoworkingViewState extends State<CoworkingView>
                              article.imageName = article.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
                             return NewsItem(myCallback: () {
                               viewModel.navigateToDetails(article);
-                            }, article!.id.toString(), article.title, article.imageName,
+                            }, article.id.toString(), article.title, article.imageName,
                                 article.description,article.articlesLink);
                           })
                       : const NoDataWidget(message: 'No Coworking available')));

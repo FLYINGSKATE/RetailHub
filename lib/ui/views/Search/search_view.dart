@@ -1,4 +1,9 @@
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:retailhub/constants/app_colors.dart';
 import 'package:retailhub/model/startup_model.dart';
 import 'package:stacked/stacked.dart';
@@ -188,8 +193,23 @@ class _SearchViewState extends State<SearchView>
             Startups? startups = viewModel.searchedStartUps[index];
             //startups.imageName = blogs.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
             print("startups.logo");
-          //  print(startups.logo.toString());
-           // print(startups.toJson());
+
+          //  String logo = "https://app.retailhub.ai/api/v2/avatar/files/112026"
+
+           // /api/v2/avatar/files/112026
+            print(startups.logoId);
+            print(startups.logo30Id);
+            print(startups.logo);
+            print(startups.logo60);
+            print(startups.logo60Id);
+            print(startups.logo120);
+            print(startups.logo120Id);
+
+            print("Ashiq");
+            print("https://app.retailhub.ai/api/v2/avatar/files/${startups.logo120Id}");
+
+            //print(startups.logo.toString());
+            // print(startups.toJson());
             /*print(startups.id);
             print(startups.companyShortName);
             print(startups.logoId);
@@ -202,10 +222,11 @@ class _SearchViewState extends State<SearchView>
 
             print(startups.companyDescription);
             print(startups.linkedInCompanyPage);*/
-            return NewsItem(
+
+            return StartUpItems(
               startups.id,
               startups.companyShortName??"No Name",
-              startups.logo??"",
+              "https://app.retailhub.ai/api/v2/avatar/files/${startups.logo30Id}"??"",
               startups.companyDescription.toString().replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ''),
               startups.linkedInCompanyPage, myCallback: (){
                 viewModel.navigateToStartupDetails(startups);
@@ -220,7 +241,9 @@ class _SearchViewState extends State<SearchView>
           itemBuilder: (context, index) {
             Datum? blogs = viewModel.searchedArticles[index];
             blogs.imageName = blogs.imageName.replaceAll("35.246.127.78", "Staticprod.retailhub.ai");
-            return NewsItem(
+
+
+            return StartUpItems(
               myCallback: () {
                 viewModel.navigateToDetails(blogs);
               },
@@ -241,3 +264,145 @@ class _SearchViewState extends State<SearchView>
 
   }
 }
+
+
+class StartUpItems extends StatefulWidget {
+  final String? id, newstitle, imageUrl, newsDesc, url;
+  final Function myCallback;
+
+  const StartUpItems(
+      this.id, this.newstitle, this.imageUrl, this.newsDesc, this.url,
+      {Key? key, required this.myCallback})
+      : super(key: key);
+
+  @override
+  State<StartUpItems> createState() => _StartUpItemsState();
+}
+
+class _StartUpItemsState extends State<StartUpItems> {
+
+  late Future<Uint8List> myFuture;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("Initialized Ashraf");
+    myFuture = _getBytes(widget.imageUrl);
+
+    super.initState();
+  }
+
+  Future<Uint8List> _getBytes(imageUrl) async {
+    Uint8List? _bytes;
+    print("Ashraf we r in");
+
+    if(kIsWeb){
+      Uri uri = Uri.parse(imageUrl);
+      Uint8List fileData = await http.readBytes(uri);
+      return fileData;
+    }
+    else{
+      final ByteData data = await NetworkAssetBundle(Uri.parse(imageUrl)).load(imageUrl);
+      print("Mental Ashraf");
+      _bytes = data.buffer.asUint8List();
+      print(data);
+      // see how byte date of the image looks like
+      print("Ashraf");
+      print(_bytes);
+      return _bytes;
+    }
+
+    //Uint8List fileData =  Uint8List.fromList(snapshot.data!);
+
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        InkWell(
+          onTap: (() {
+            widget.myCallback();
+          }),
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    //color: const Color(0xFFEAF0F1),
+                    child: FutureBuilder<Uint8List>(
+                        future: myFuture,
+                        builder: (context,AsyncSnapshot<Uint8List> snapshot) {
+                          if(snapshot.hasData){
+                            print("Asjr");
+                            print(snapshot.data!);
+                            return Image.memory(snapshot.data!,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            );
+                          }
+                          else{
+                            return const Center(
+                                child: SpinKitThreeBounce(
+                                  color: loadingBarcolor,
+                                  size: 25.0,
+                            ));
+                          }
+
+                        }
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 100,
+                    margin: const EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            widget.newstitle!,
+                            maxLines: 2,
+                            softWrap: true,
+                            style: const TextStyle(
+                                color: white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            widget.newsDesc!,
+                            maxLines: 2,
+                            softWrap: true,
+                            style: const TextStyle(
+                                color: grey,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // article title end
+              ],
+            ),
+          ),
+        ),
+        const Divider(),
+      ],
+    );
+  }
+}
+
+

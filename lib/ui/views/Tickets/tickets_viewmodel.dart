@@ -33,10 +33,11 @@ class TicketsViewModel extends BaseViewModel {
   List<TicketsModal> get tickets => _tickets;
   List<EventsModal> get events => _events;
   List<ParticipantsModal> get participants => _participants;
-
+  SharedPreferences? prefs;
   initModel(BuildContext context) async {
     //SharedPreferences prefs = await SharedPreferences.getInstance();
    // email = prefs.getString(UserDetails.email.toString()) ?? '';
+    prefs = await SharedPreferences.getInstance();
     getTickets();
     notifyListeners();
   }
@@ -50,7 +51,24 @@ class TicketsViewModel extends BaseViewModel {
 
   getTickets() async {
     showProgressBar(true);
-    await ticketsCollectionReference.get().then((QuerySnapshot querySnapshot) async {
+
+    //Fetch Email Id From Shared Preferences
+    String? emailId = prefs?.getString(UserDetails.email.toString());
+    print("User Collection Fec "+(emailId??""));
+
+    //Get Reference of the Participants From Email Id
+    DocumentReference? participantReference ;
+    await usersCollectionReference.where('Email',isEqualTo: emailId).get().then((value) {
+      if(value.docs.length==0){
+        ///The User email have no tickets
+        showProgressBar(false);
+        notifyListeners();
+        return;
+      }
+      participantReference = value.docs.first.reference;
+    });
+
+    await ticketsCollectionReference.where('ParticipantsDetails', isEqualTo: participantReference).get().then((QuerySnapshot querySnapshot) async {
       print("Tickets");
       print(querySnapshot.docs.first.data());
       print(querySnapshot.docs.length);

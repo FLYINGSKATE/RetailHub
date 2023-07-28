@@ -12,8 +12,7 @@ import '../../enums/enums.dart';
 
 class StartUpViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  final LocalStorageService _localStorageService =
-      locator<LocalStorageService>();
+  final LocalStorageService _localStorageService = locator<LocalStorageService>();
 
   void isTokenValid() async {
     setBusy(true);
