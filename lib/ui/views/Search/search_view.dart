@@ -81,6 +81,9 @@ class _SearchViewState extends State<SearchView>
                 style: const TextStyle(color: white),
                 textInputAction: TextInputAction.search,
                 onChanged: (ss) {
+                  print("onChanged selectedTabIndex");
+                  print(ss);
+                  print(selectedTabIndex);
                   if(viewModel?.searchController.text.trim()==""){
                     if(selectedTabIndex==0){
                       viewModel?.getAllStartups();
@@ -100,6 +103,8 @@ class _SearchViewState extends State<SearchView>
                 },
                 onEditingComplete: (() {
                   if(viewModel?.searchController.text.trim()==""){
+                    print("onEditingComplete selectedTabIndex");
+                    print(selectedTabIndex);
                     if(selectedTabIndex==0){
                       viewModel?.getAllStartups();
                     }
@@ -117,7 +122,7 @@ class _SearchViewState extends State<SearchView>
                   }
                 }) ,
                 onSubmitted: ((value) {
-                  print("selectedTabIndex");
+                  print("onSubmitted selectedTabIndex");
                   print(selectedTabIndex);
                   if(viewModel?.searchController.text.trim()==""){
                     if(selectedTabIndex==0){

@@ -120,7 +120,9 @@ class ApiServices {
       onSuccess!(response.data);
     } catch (e) {
       if (e is DioError) {
-        navigationService.popAllAndNavigateTo(loginViewRoute);
+        if(e.response!.statusCode.toString()!="500"){
+          navigationService.popAllAndNavigateTo(loginViewRoute);
+        }
         onError!(e.response!.statusCode.toString(), true);
       } else {
         // navigationService.popAllAndNavigateTo(loginViewRoute);
