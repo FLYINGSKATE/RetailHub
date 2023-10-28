@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "retailhub-ea728"
+  },
+  "targets": {
+    "retailhub-ea728": {
+      "hosting": {
+        "retailhub-mobileapp.web.app": [
+          "build/web"
+        ],
+        "es": [
+          "retailhub-mobileapp.web.app"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
