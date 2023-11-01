@@ -70,166 +70,165 @@ class BodyWidget extends ViewModelWidget<AuthenticationViewModel> {
       builder: (BuildContext context, BoxConstraints viewportConstraints) {
         var size = MediaQuery.of(context).size;
         return Scaffold(
+          resizeToAvoidBottomInset: true,
           body: Container(
             padding: const EdgeInsets.all(10),
             height: viewportConstraints.maxHeight,
             width: viewportConstraints.maxWidth,
             color: Colors.black,
-            child: CustomScrollView(slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Form(
-                  key: _formkey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Image.asset(
-                              logoasset,
-                              scale: 4,
-                            ),
+            child: SingleChildScrollView(
+              physics:NeverScrollableScrollPhysics(),
+              child: Form(
+                key: _formkey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Image.asset(
+                            logoasset,
+                            scale: 4,
                           ),
                         ),
-                        5.h.heightBox,
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextFormField(
-                              onChanged: (s){
-                                viewModel.isValidEmailAddress = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                    .hasMatch(s);
+                      ),
+                      5.h.heightBox,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextFormField(
+                            onChanged: (s){
+                              viewModel.isValidEmailAddress = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(s);
 
-                                if(!viewModel.isValidEmailAddress!){
-                                  viewModel.emailErrortext = "Please Enter a valid Email Address";
-                                }
-                                else{
-                                  viewModel.emailErrortext = null;
-                                }
-                                viewModel.notifyListeners();
+                              if(!viewModel.isValidEmailAddress!){
+                                viewModel.emailErrortext = "Please Enter a valid Email Address";
+                              }
+                              else{
+                                viewModel.emailErrortext = null;
+                              }
+                              viewModel.notifyListeners();
 
-                              },
-                              controller: viewModel.bookingemailController,
-                              cursorColor: primaryColor,
-                              autocorrect: true,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: appFontFamily,
-                                  fontWeight: FontWeight.w600,
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 12.sp),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                errorText: viewModel.emailErrortext,
-                                hintText: CustomStrings.emailaddress,
-                                hintStyle: MyTextStyle.hinttext,
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: underColor),
-                                ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red),
-                                ),
-                                focusedErrorBorder:UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.red),
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: underColor),
-                                ),
+                            },
+                            controller: viewModel.bookingemailController,
+                            cursorColor: primaryColor,
+                            autocorrect: true,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: appFontFamily,
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FontStyle.normal,
+                                fontSize: 12.sp),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              errorText: viewModel.emailErrortext,
+                              hintText: CustomStrings.emailaddress,
+                              hintStyle: MyTextStyle.hinttext,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: underColor),
                               ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "required";
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                FocusScope.of(context).unfocus();
-                              },
-                            ),
-
-
-                            2.h.heightBox,
-                            Align(
-                              alignment: Alignment.center,
-                              child: Theme(
-                                data: ThemeData(
-                                    unselectedWidgetColor: Colors.white),
-                                child: CheckboxListTile(
-                                  activeColor: primaryColor,
-                                  checkColor: Colors.white,
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  value: viewModel.bookingagreecheck,
-                                  onChanged: (bool? value) {
-                                    viewModel.bookingagreecheck = value;
-                                    viewModel.notifyListeners();
-                                  },
-                                  title: const Text(''),
-                                  subtitle: Text(
-                                    CustomStrings.iagree,
-                                    style: MyTextStyle.agreetext,
-                                  ),
-                                ),
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                              focusedErrorBorder:UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: underColor),
                               ),
                             ),
-                            1.h.heightBox,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "required";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
 
-                            2.h.heightBox,
 
-                            2.h.heightBox,
-                            ElevatedButton(
-                              onPressed: () {
-                                viewModel.sendEmailLink(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.h),
-                                backgroundColor: (viewModel.bookingagreecheck! && viewModel.isValidEmailAddress!)!
-                                    ? primaryColor
-                                    : Colors.grey,
-                                foregroundColor: const Color(0xff394512),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                ),
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(vertical: 1.5.h),
-                                  child: Text(
-                                    CustomStrings.getstarted,
-                                    style: MyTextStyle.button2,
-                                  ),
+                          2.h.heightBox,
+                          Align(
+                            alignment: Alignment.center,
+                            child: Theme(
+                              data: ThemeData(
+                                  unselectedWidgetColor: Colors.white),
+                              child: CheckboxListTile(
+                                activeColor: primaryColor,
+                                checkColor: Colors.white,
+                                contentPadding:
+                                const EdgeInsets.symmetric(vertical: 2),
+                                controlAffinity:
+                                ListTileControlAffinity.leading,
+                                value: viewModel.bookingagreecheck,
+                                onChanged: (bool? value) {
+                                  viewModel.bookingagreecheck = value;
+                                  viewModel.notifyListeners();
+                                },
+                                title: const Text(''),
+                                subtitle: Text(
+                                  CustomStrings.iagree,
+                                  style: MyTextStyle.agreetext,
                                 ),
                               ),
                             ),
-                            45.h.heightBox,
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: CustomStrings.copyrightText,
-                                        style: MyTextStyle.smalltext),
+                          ),
+                          1.h.heightBox,
 
-                                  ],
+                          2.h.heightBox,
+
+                          2.h.heightBox,
+                          ElevatedButton(
+                            onPressed: () {
+                              viewModel.signInWithEmailLink(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(vertical: 1.h,horizontal: 2.h),
+                              backgroundColor: (viewModel.bookingagreecheck! && viewModel.isValidEmailAddress!)!
+                                  ? primaryColor
+                                  : Colors.grey,
+                              foregroundColor: const Color(0xff394512),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                            ),
+                            child: Center(
+                              child: Padding(
+                                padding:
+                                EdgeInsets.symmetric(vertical: 1.5.h),
+                                child: Text(
+                                  CustomStrings.getstarted,
+                                  style: MyTextStyle.button2,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          42.h.heightBox,
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: CustomStrings.copyrightText,
+                                      style: MyTextStyle.smalltext),
+
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ]),
+            ),
           ),
         );
       },

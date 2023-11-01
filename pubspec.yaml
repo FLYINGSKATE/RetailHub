@@ -63,6 +63,7 @@ dependencies:
   qr_flutter: ^4.1.0
   firebase_auth:
   firebase_dynamic_links:
+  open_mail_app: ^0.4.5
 
 
 dev_dependencies:

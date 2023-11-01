@@ -76,13 +76,32 @@ class ApiServices {
   static Future<void> postRequest({
     String? url,
     Map<String, dynamic>? params,
+    String? api_key,
     Function? onError,
     Function? onSuccess,
   }) async {
     dio.options.headers['Content-Type'] = 'application/json';
+
+    print(api_key);
+    print("api_key");
+
+
+
+
+    /*{
+      'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'api-key': BREVO_API_KEY
+    }*/
     try {
       log(url!);
       log(params.toString());
+      log(api_key.toString());
+      if(api_key!=null){
+        dio.options.headers['api-key'] = api_key;
+        dio.options.headers['Accept'] = 'application/json';
+        print(dio.options.headers['api-key'] = api_key);
+      }
 
       var response = await dio.post(url, data: params);
       try {
