@@ -62,12 +62,14 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
   final text = <String>['1', '2', '3'];
 
   //static const BREVO_API_KEY = "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";
-  static const BREVO_API_KEY = "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";
+  //static const BREVO_API_KEY = "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";
+  static const BREVO_API_KEY = "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";
   static const BREVO_BASE_URL = "https://api.brevo.com/v3";
 
   String? emailErrortext;
 
   final _firebaseAuth = FirebaseAuth.instance;
+  BuildContext? buildContext;
 
   static const noCredentialsWereFound = 'No credentials were found';
 
@@ -77,6 +79,7 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
 
   initLogin(BuildContext context) async {
     WidgetsBinding.instance.addObserver(this);
+    buildContext = context;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bookingemailController.text = prefs.getString(UserDetails.email.toString()) ?? '';
     passwordController.text = prefs.getString(UserDetails.password.toString()) ?? '';
@@ -99,7 +102,7 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
     switch (state) {
       case AppLifecycleState.resumed:
         developer.log('SignInController: resumed');
-        retrieveDynamicLinkAndSignIn(fromColdState: false, context: null);
+        retrieveDynamicLinkAndSignIn(fromColdState: false);
         break;
       case AppLifecycleState.inactive:
         developer.log('SignInController: inactive');
@@ -169,7 +172,7 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
 
   /// Cold state means the app was terminated.
   Future<AppResponse> retrieveDynamicLinkAndSignIn({
-    required bool fromColdState,BuildContext? context
+    required bool fromColdState
   }) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -197,8 +200,12 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
       }
 
       developer.log('deepLink => $deepLink');
+
+
+      signInSignUp(email);
+
       if (deepLink != null) {
-        registerUser(context!);
+        signInSignUp(email);
       } else {
         developer.log('retrieveDynamicLinkAndSignIn.deepLink[$deepLink]');
         developer.log("Null Link");
@@ -214,6 +221,8 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
       id: 'retrieveDynamicLinkAndSignIn',
       message: noCredentialsWereFound,
     );
+
+
   }
 
   bool isSigningIn = false;
@@ -251,14 +260,11 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
             log(user.data.user.firstName);
             var userData = user.data.user;
             prefs.setBool(UserDetails.islogin.toString(), true);
-            prefs.setString(
-                UserDetails.firstname.toString(), userData.firstName);
+            prefs.setString(UserDetails.firstname.toString(), userData.firstName);
             prefs.setString(UserDetails.lastname.toString(), userData.lastName);
-            prefs.setString(UserDetails.fullname.toString(),
-                userData.firstName + userData.lastName);
+            prefs.setString(UserDetails.fullname.toString(), userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
-            prefs.setString(
-                UserDetails.phoneNumber.toString(), userData.phoneNumber);
+            prefs.setString(UserDetails.phoneNumber.toString(), userData.phoneNumber);
             prefs.setString(UserDetails.token.toString(), user.data.token);
             BaseCommonMethods.showSnackbar(
               context: context,
@@ -306,11 +312,9 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
             var userData = user.user;
             prefs.setBool(UserDetails.islogin.toString(), true);
             prefs.setString(UserDetails.imgurl.toString(), "null");
-            prefs.setString(
-                UserDetails.firstname.toString(), userData.firstName);
+            prefs.setString(UserDetails.firstname.toString(), userData.firstName);
             prefs.setString(UserDetails.lastname.toString(), userData.lastName);
-            prefs.setString(UserDetails.fullname.toString(),
-                userData.firstName + userData.lastName);
+            prefs.setString(UserDetails.fullname.toString(), userData.firstName + userData.lastName);
             prefs.setString(UserDetails.email.toString(), userData.email);
             //prefs.setString(UserDetails.phoneNumber.toString(),userData.phoneNumber);
             BaseCommonMethods.showSnackbar(
@@ -646,6 +650,30 @@ class AuthenticationViewModel extends BaseViewModel with WidgetsBindingObserver 
     );
   }
 
+
+
+  /// Check If Document Exists
+  Future<void> signInSignUp(String emailId) async {
+    try {
+      var doc = await usersCollectionReference.limit(1).where('Email', isEqualTo: emailId).get();
+      if(!doc.docs.first.exists){
+        await usersCollectionReference.add({
+          "Name":emailId.split("@")[0].split('.')[0],"Email":emailId}
+        );
+      }
+      //Navigate to Dashboard with data;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(UserDetails.islogin.toString(), true);
+      prefs.setString(UserDetails.imgurl.toString(), "null");
+      prefs.setString(UserDetails.firstname.toString(), emailId.split("@")[0].split('.')[0]);
+      prefs.setString(UserDetails.lastname.toString(), emailId.split("@")[0].split('.')[0]);
+      prefs.setString(UserDetails.fullname.toString(), emailId.split("@")[0].split('.')[0] +emailId.split("@")[0].split('.')[0]);
+      prefs.setString(UserDetails.email.toString(), emailId);
+      _navigationService.navigateAndReplace(dashboardViewRoute);
+    } catch (e) {
+      print(e);
+    }
+  }
 
 
 

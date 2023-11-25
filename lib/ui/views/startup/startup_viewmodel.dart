@@ -24,7 +24,8 @@ class StartUpViewModel extends BaseViewModel {
       const Duration(seconds: 0),
       () async {
         setBusy(false);
-        _navigationService.popAllAndNavigateTo(isLogin? dashboardViewRoute: authenticationViewRoute);
+       _navigationService.popAllAndNavigateTo(isLogin? dashboardViewRoute: authenticationViewRoute);
+        //_navigationService.popAllAndNavigateTo(isLogin? dashboardViewRoute: bookingViewRoute);
       },
     );
     notifyListeners();

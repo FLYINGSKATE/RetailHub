@@ -56,8 +56,7 @@ class LoginViewModel extends BaseViewModel {
   initLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     emailController.text = prefs.getString(UserDetails.email.toString()) ?? '';
-    passwordController.text =
-        prefs.getString(UserDetails.password.toString()) ?? '';
+    passwordController.text = prefs.getString(UserDetails.password.toString()) ?? '';
     notifyListeners();
   }
 
